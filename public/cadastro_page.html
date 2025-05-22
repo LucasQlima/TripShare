@@ -56,7 +56,7 @@
     function cadastrar() {
         var username = input_username.value;
         var email = input_email.value;
-        var pais = input_pais.value;
+        var fkPais = input_pais.value;
         var senha = input_senha.value;
         var confSenha = input_confSenha.value;
 
@@ -67,7 +67,7 @@
         } else if (senha != confSenha) {
             alert('A confirmação de senha deve ser igual à senha.');
         } else {
-            fetch("/usuario/cadastrar", {
+            fetch('/usuarios/cadastrar', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -76,7 +76,7 @@
                     usernameServer: username,
                     emailServer: email,
                     senhaServer: senha,
-                    paisServer: pais
+                    paisServer: fkPais
                 })
             }).then((response) => {
                 alert('Cadastro válido!');
