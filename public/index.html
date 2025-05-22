@@ -67,8 +67,8 @@
             }).then((response) => {
                 response.json().then(resultado => {
                     sessionStorage.EMAIL_USUARIO = resultado.email;
-                    sessionStorage.NOME_USUARIO = resultado.nome;
-                    sessionStorage.ID_USUARIO = resultado.id;
+                    sessionStorage.USERNAME_USUARIO = resultado.username;
+                    sessionStorage.ID_USUARIO = resultado.idUsuario;
 
                     alert('Login válido!');
                     window.location.href = "home_page.html";
