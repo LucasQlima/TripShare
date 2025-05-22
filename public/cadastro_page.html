@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
         font-family: "Sofia", sans-serif;
     }
 </style>
+
 <body>
     <div class="container_logo">
         <h3>TripShare</h3>
@@ -27,25 +29,63 @@
         <div class="container_forms">
             <h1>Sign up</h1>
             <h4>Username</h4>
-            <input type="text" placeholder="TripShare" class="input_text">
+            <input type="text" placeholder="TripShare" class="input_text" id="input_username">
             <h4>Email</h4>
-            <input type="text" placeholder="exemplo@sptech.school" class="input_text">
+            <input type="text" placeholder="exemplo@sptech.school" class="input_text" id="input_email">
             <h4>Pais de origem</h4>
-            <input type="text" placeholder="Brazil" class="input_text">
+            <input type="text" placeholder="Brazil" class="input_text" id="input_pais">
             <h4>Senha</h4>
-            <input type="password" placeholder="********" class="input_text">
+            <input type="password" placeholder="********" class="input_text" id="input_senha">
             <h4>Confirmar senha</h4>
-            <input type="password" placeholder="********" class="input_text_senha">
+            <input type="password" placeholder="********" class="input_text_senha" id="input_confSenha">
             <div class="container_checkbox">
                 <span>ver senha</span>
                 <input type="checkbox">
             </div>
-            <button>SIGN UP NOW</button>
+            <button onclick="cadastrar()">SIGN UP NOW</button>
             <div class="container_cadastre">
                 <p>Já possui uma conta?</p>
-                <a href="login_page.html">logar-se</a>
+                <a href="index.html">logar-se</a>
             </div>
         </div>
     </div>
 </body>
+
 </html>
+<script>
+    function cadastrar() {
+        var username = input_username.value;
+        var email = input_email.value;
+        var pais = input_pais.value;
+        var senha = input_senha.value;
+        var confSenha = input_confSenha.value;
+
+        if (email.indexOf('@') == -1) {
+            alert('O email deve conter o símbolo @.');
+        } else if (senha.length <= 6 || !/[0-9]/.test(senha)) {
+            alert('A senha deve ter mais de 6 caracteres e pelo menos um número.');
+        } else if (senha != confSenha) {
+            alert('A confirmação de senha deve ser igual à senha.');
+        } else {
+            fetch("/usuario/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    usernameServer: username,
+                    emailServer: email,
+                    senhaServer: senha,
+                    paisServer: pais
+                })
+            }).then((response) => {
+                alert('Cadastro válido!');
+                window.location.href = "index.html";
+                response.json().then(resultado => {
+                    console.log(resultado)
+                })
+            })
+
+        }
+    }
+</script>
