@@ -68,6 +68,7 @@
                 response.json().then(resultado => {
                     sessionStorage.EMAIL_USUARIO = resultado.email;
                     sessionStorage.USERNAME_USUARIO = resultado.username;
+                    sessionStorage.IMGPERFIL_USUARIO = resultado.imgPerfil;
                     sessionStorage.ID_USUARIO = resultado.idUsuario;
 
                     alert('Login válido!');

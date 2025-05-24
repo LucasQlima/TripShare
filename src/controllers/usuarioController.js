@@ -23,6 +23,7 @@ function autenticar(req, res) {
                             username: resultado[0].username,
                             email: resultado[0].email,
                             senha: resultado[0].senha,
+                            imgPerfil: resultado[0].imgPerfil,
                         });
                     } else if (resultado.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");

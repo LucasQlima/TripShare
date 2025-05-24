@@ -66,10 +66,7 @@
                 </div>
             </div>
             <div class="container_perfil">
-                <div class="perfil">
-                    <img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="">
-                    <h3>Luquinhas</h3>
-                </div>
+                <div class="perfil" id="div_perfil"></div>
                 <div class="campo_sair">
                     <button onclick="sair()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -194,8 +191,17 @@
 </body>
 </html>
 <script>
-    var username = sessionStorage.USERNAME_USUARIO
-    var idUsername = sessionStorage.ID_USUARIO
+    var username = sessionStorage.USERNAME_USUARIO;
+    var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
+    var idUsername = sessionStorage.ID_USUARIO;
+
+    if (imgPerfil != undefined) {
+        div_perfil.innerHTML = `<img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="Imagem de Perfil">
+        <h3>${username}</h3>`
+    } else {
+        div_perfil.innerHTML = `<img src="../img/219eaea67aafa864db091919ce3f5d82.jpg" alt="Imagem de Perfil">
+        <h3>${username}</h3>`
+    }
 
     function sair() {
         sessionStorage.clear();
