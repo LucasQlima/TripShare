@@ -1,5 +1,12 @@
+# Ignorar node_modules
 node_modules/
-package-lock.json
+
+# Ignorar arquivos de ambiente
 .env
 .env.dev
+
+# Ignorar lock file do npm
+package-lock.json
+
+# Ignorar pasta .github
 .github/
