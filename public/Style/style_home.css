@@ -70,7 +70,7 @@ body {
     object-fit: cover;
 }
 
-.container_nav_left .campo_sair a {
+.container_nav_left .campo_sair button {
     all: unset;
     display: flex;
     flex-direction: row;
@@ -78,6 +78,7 @@ body {
     margin-left: 5vh;
     margin-top: 2vh;
     margin-bottom: 1vh;
+    cursor: pointer;
 }
 
 .container_nav_left .campo_sair h3 {
