@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TripShare || Home Page</title>
-    <link rel="stylesheet" href="../Style/style_home.css">
+    <link rel="stylesheet" href="\Style\style_home.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
 </head>
 <style>
@@ -14,7 +14,7 @@
     }
 </style>
 
-<body>
+<body onload="feed()">
     <div class="container">
         <div class="container_nav_left">
             <div class="container_campos">
@@ -189,13 +189,16 @@
     </div>
 
 </body>
+
 </html>
 <script>
     var username = sessionStorage.USERNAME_USUARIO;
     var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
     var idUsername = sessionStorage.ID_USUARIO;
 
-    if (imgPerfil != undefined) {
+    feed()
+
+    if (imgPerfil != null) {
         div_perfil.innerHTML = `<img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="Imagem de Perfil">
         <h3>${username}</h3>`
     } else {
@@ -203,8 +206,23 @@
         <h3>${username}</h3>`
     }
 
+    function feed() {
+        fetch('/feed/recuperarFeed', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
     function sair() {
         sessionStorage.clear();
         window.location.href = "index.html";
-   }
+    }
 </script>
