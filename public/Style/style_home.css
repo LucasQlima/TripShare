@@ -245,9 +245,17 @@ body {
 }
 
 .container_conteudo .publicacao .interacoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 70vh;
     height: fit-content;
-    margin-top: 2vh;
+}
+
+.container_conteudo .publicacao .interacoes h4 {
+    margin-left: 1vh;
+    font-size: 2vh;
 }
 
 .container_conteudo .publicacao h4 {

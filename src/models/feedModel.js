@@ -15,7 +15,7 @@ function recuperarFeed() {
                 p.curtidas AS curtidas,
                 p.denuncias AS denuncias,
                 i.imagem AS imagem,
-                pa.nome AS pais
+                pa.bandeira AS pais
             FROM
                 TBL_USUARIO u JOIN TBL_PUBLICACAO p 
                 ON u.idUsuario = p.fkUsuario

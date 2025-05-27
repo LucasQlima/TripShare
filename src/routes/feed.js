@@ -3,8 +3,8 @@ var router = express.Router();
 
 var feedController = require("../controllers/feedController");
 
-router.get("/recuperarFeed", function (res) {
-    feedController.recuperarFeed(res);
+router.get("/recuperarFeed", function (req, res) {
+    feedController.recuperarFeed(req, res);
 })
 
 

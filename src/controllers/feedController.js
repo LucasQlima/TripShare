@@ -1,6 +1,6 @@
 var feedModel = require("../models/feedModel");
 
-function recuperarFeed(res) {
+function recuperarFeed(req, res) {
     feedModel.recuperarFeed()
         .then(
             function (resultado) {
@@ -8,20 +8,18 @@ function recuperarFeed(res) {
                 console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
 
                 if (resultado.length >= 1) {
-                    // for (var i = 0; i < resultado.length; i++){
-                        res.json({
-                            username: resultado[0].username,
-                            imgPerfil: resultado[0].imgPerfil,
-                            idPublicacao: resultado[0].idPublicacao,
-                            descricao: resultado[0].descricao,
-                            dtPubli: resultado[0].dtPubli,
-                            curtidas: resultado[0].curtidas,
-                            denuncias: resultado[0].denuncias,
-                            imagem: resultado[0].imagem,
-                            pais: resultado[0].pais,
-                        });
-                    //}
-                    console.log(resultado);
+                    const feedFormatado = resultado.map(item => ({
+                        username: item.username,
+                        imgPerfil: item.imgPerfil,
+                        idPublicacao: item.idPublicacao,
+                        descricao: item.descricao,
+                        dtPubli: item.dtPubli,
+                        curtidas: item.curtidas,
+                        denuncias: item.denuncias,
+                        imagem: item.imagem,
+                        pais: item.pais
+                    }));
+                    res.json(feedFormatado);
                 } else if (resultado.length == 0) {
                     res.status(403).send("Publicação não encontrada");
                 }
@@ -33,8 +31,6 @@ function recuperarFeed(res) {
                 res.status(500).json(erro.sqlMessage);
             }
         );
-
-
 }
 
 module.exports = {
