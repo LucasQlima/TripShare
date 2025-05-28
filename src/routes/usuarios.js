@@ -11,4 +11,8 @@ router.post("/autenticar", function (req, res) {
     usuarioController.autenticar(req, res);
 });
 
+router.get("/buscarPaises", function (req, res) {
+    usuarioController.buscarPaises(req, res);
+});
+
 module.exports = router;

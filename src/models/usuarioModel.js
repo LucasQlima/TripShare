@@ -18,7 +18,22 @@ function cadastrar(username, email, fkPais, senha) {
     return database.executar(instrucaoSql);
 }
 
+//Buscar Paises
+function buscarPaises() {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarPaises():");
+
+    var instrucaoSql = `SELECT 
+                            idPais as identificador, 
+                            nome as pais,
+                            bandeira
+                        FROM
+	                        TBL_PAIS;`;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    buscarPaises
 };
