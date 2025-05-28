@@ -34,7 +34,7 @@
             <input id="senha_input" type="password" placeholder="********" class="input_text_senha">
             <div class="container_checkbox">
                 <span>ver senha</span>
-                <input type="checkbox" id="input_checkbox">
+                <input type="checkbox" id="input_checkbox" onchange="verSenha()">
             </div>
             <button onclick="entrar()">Sing in now</button>
             <div class="container_cadastre">
@@ -47,6 +47,8 @@
 
 </html>
 <script>
+    var mostrar_senha = 0;
+
     function entrar() {
         var email = email_input.value;
         var senha = senha_input.value;
@@ -77,6 +79,18 @@
             }).catch(() => {
                 console.log("deu ruim")
             })
+        }
+    }
+
+    function verSenha() {
+        var senha = document.getElementById('senha_input');
+
+        if (mostrar_senha == 0) {
+            senha.setAttribute('type', 'text');
+            mostrar_senha = 1;
+        } else {
+            senha.setAttribute('type', 'password');
+            mostrar_senha = 0;
         }
     }
 </script>

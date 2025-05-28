@@ -40,7 +40,7 @@
             <input type="password" placeholder="********" class="input_text_senha" id="input_confSenha">
             <div class="container_checkbox">
                 <span>ver senha</span>
-                <input type="checkbox">
+                <input type="checkbox" onchange="verSenha()">
             </div>
             <button onclick="cadastrar()">SIGN UP NOW</button>
             <div class="container_cadastre">
@@ -53,6 +53,7 @@
 
 </html>
 <script>
+    var mostrar_senha = 0;
     function cadastrar() {
         var username = input_username.value;
         var email = input_email.value;
@@ -86,6 +87,21 @@
                 })
             })
 
+        }
+    }
+
+    function verSenha() {
+        var senha = document.getElementById('input_senha');
+        var confSenha = document.getElementById('input_confSenha');
+
+        if (mostrar_senha == 0) {
+            senha.setAttribute('type', 'text');
+            confSenha.setAttribute('type', 'text');
+            mostrar_senha = 1;
+        } else {
+            senha.setAttribute('type', 'password');
+            confSenha.setAttribute('type', 'password');
+            mostrar_senha = 0;
         }
     }
 </script>
