@@ -8,10 +8,10 @@ function recuperarFeed() {
     var instrucaoSql = `
             SELECT 
                 u.username AS username,
-                u.imgPerfil AS imgPefil,
+                u.imgPerfil AS imgPerfil,
                 p.idPublicacao AS idPublicacao,
                 p.descricao AS descricao,
-                p.dtPubli AS dtPubli,
+                DATE_FORMAT(p.dtPubli, '%d/%m/%y %H : %i' ) AS dtPubli,
                 p.curtidas AS curtidas,
                 p.denuncias AS denuncias,
                 i.imagem AS imagem,
