@@ -1,6 +1,7 @@
 CREATE DATABASE tripshare;
 USE tripshare;
 
+
 CREATE TABLE TBL_PAIS (
 	idPais INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
@@ -13,7 +14,7 @@ CREATE TABLE TBL_USUARIO (
     username VARCHAR(30) NOT NULL UNIQUE,
     email VARCHAR(200) NOT NULL UNIQUE,
     senha VARCHAR(20) NOT NULL,
-    imgPerfil LONGBLOB,
+    imgPerfil VARCHAR(400) DEFAULT 'https://i.pinimg.com/474x/a8/da/22/a8da222be70a71e7858bf752065d5cc3.jpg',
     fkPais INT,
     CONSTRAINT fkUsuarioPais FOREIGN KEY (fkPais)
 		REFERENCES TBL_PAIS(idPais)
@@ -33,7 +34,7 @@ CREATE TABLE TBL_PUBLICACAO (
 
 CREATE TABLE TBL_IMAGEM(
 	idImagem INT AUTO_INCREMENT,
-    imagem LONGBLOB,
+    imagem VARCHAR(400) ,
     fkPublicacao INT,
     CONSTRAINT pksImagem PRIMARY KEY (idImagem, fkPublicacao),
     CONSTRAINT fkImagemPublicacao FOREIGN KEY (fkPublicacao)
@@ -45,7 +46,6 @@ CREATE TABLE TBL_COMENTARIO (
     descricao VARCHAR(400) NOT NULL,
     dtPubli DATETIME NOT NULL,
     curtidas INT,
-    denuncias INT,
     fkComentario INT,
     fkPublicacao INT,
     fkUsuario INT,
@@ -349,20 +349,30 @@ INSERT INTO TBL_PUBLICACAO (descricao, dtPubli, curtidas, denuncias, fkUsuario) 
 -- Imagem
 
 INSERT INTO TBL_IMAGEM (imagem, fkPublicacao) VALUES 
-(NULL, 1),
+('https://images.pexels.com/photos/1804177/pexels-photo-1804177.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', 1),
 (NULL, 2),
-(NULL, 3),
-(NULL, 4),
+('https://images.pexels.com/photos/1128408/pexels-photo-1128408.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', 3),
+('https://images.pexels.com/photos/1534560/pexels-photo-1534560.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', 4),
 (NULL, 5);
 
 -- Comentarios
 
-INSERT INTO TBL_COMENTARIO (descricao, dtPubli, curtidas, denuncias, fkPublicacao, fkUsuario) VALUES 
-('O Rio é realmente maravilhoso!', '2023-05-15 15:45:00', 30, 0, 1, 2),
-('Quero muito visitar a Áustria também!', '2023-06-20 10:30:00', 15, 0, 2, 3),
-('Berlim tem uma história fascinante!', '2023-07-10 19:20:00', 50, 1, 3, 4),
-('Concordo, Lisboa é encantadora!', '2023-08-05 12:45:00', 25, 0, 4, 5),
-('Nova York é a cidade dos sonhos!', '2023-09-12 23:30:00', 70, 0, 5, 1);
+INSERT INTO TBL_COMENTARIO (descricao, dtPubli, curtidas, fkPublicacao, fkUsuario) VALUES 
+('O Rio é realmente maravilhoso!', '2023-05-15 15:45:00', 30, 1, 2),
+('Quero muito visitar a Áustria também!', '2023-06-20 10:30:00', 15, 2, 3),
+('Berlim tem uma história fascinante!', '2023-07-10 19:20:00', 50, 3, 4),
+('Concordo, Lisboa é encantadora!', '2023-08-05 12:45:00', 25, 4, 5),
+('Nova York é a cidade dos sonhos!', '2023-09-12 23:30:00', 70, 5, 1),
+('O Cristo Redentor é realmente emocionante de ver!', '2023-09-20 10:15:00', 22, 1, 3),
+('As paisagens da Áustria parecem saídas de um conto de fadas.', '2023-09-25 14:30:00', 18, 2, 4),
+('Fui a Berlim no inverno, foi incrível!', '2023-10-01 19:00:00', 27, 3, 5),
+('Lisboa tem uma vibe muito acolhedora.', '2023-10-10 11:45:00', 19, 4, 1),
+('Nova York é cheia de energia, amei cada segundo!', '2023-10-18 22:00:00', 34, 5, 2),
+('Voltei do Rio com fotos maravilhosas!', '2023-10-25 13:15:00', 20, 1, 5),
+('Áustria no inverno é puro charme.', '2023-11-02 08:50:00', 16, 2, 1),
+('Em Berlim tudo respira história, muito interessante.', '2023-11-10 17:20:00', 29, 3, 2),
+('Lisboa tem doces incríveis, recomendo os pastéis de nata!', '2023-11-15 16:05:00', 23, 4, 3),
+('Assistir a um musical na Broadway foi um sonho!', '2023-11-22 21:10:00', 31, 5, 4);
 
 -- Conquistas
 
@@ -404,14 +414,14 @@ WHERE
 
 SELECT 
 	u.username as username,
-    u.imgPerfil as imgPefil,
+    u.imgPerfil as imgPerfil,
 	p.idPublicacao as idPublicacao,
     p.descricao as descricao,
-    p.dtPubli as dataPubli,
+    DATE_FORMAT(p.dtPubli, '%d/%m/%y %H : %i' ) AS dtPubli,
     p.curtidas as curtidas,
     p.denuncias as denuncias,
     i.imagem as imagem,
-    pa.nome as pais
+    pa.bandeira as pais
 FROM 
 	TBL_USUARIO u JOIN TBL_PUBLICACAO p
 		on u.idUsuario = p.fkUsuario
@@ -422,3 +432,38 @@ FROM
 	JOIN TBL_PAIS pa
 		on pa.idPais = c.fkPais
 ORDER BY dtPubli DESC;
+-- ------------------------------------------------------------
+
+SELECT 
+	COUNT(idComentario) as contagem
+FROM 
+	TBL_COMENTARIO
+WHERE
+	fkPublicacao = 5;
+-- ------------------------------------------------------------
+
+SELECT
+	u.username as username,
+    u.imgPerfil as imgPerfil,
+	c.idComentario as idComentario,
+    c.descricao as descricao,
+    DATE_FORMAT(c.dtPubli, '%d/%m/%y %H:%i' ) AS dtPubli,
+    c.curtidas as curtidas
+FROM 
+	TBL_USUARIO u JOIN TBL_COMENTARIO c
+		on u.idUsuario = c.fkUsuario
+	JOIN TBL_PUBLICACAO p
+		on p.idPublicacao = c.fkPublicacao
+	ORDER BY idComentario DESC;
+    
+-- ------------------------------------------------------------
+
+
+
+
+
+-- UPDATES
+
+UPDATE TBL_PUBLICACAO, (select r.denuncias FROM TBL_PUBLICACAO as r WHERE idRegistro = 1) as b 
+SET TBL_PUBLICACAO.denuncias = b.denuncias + 1
+WHERE TBL_PUBLICACAO.idPublicacao = 1;
