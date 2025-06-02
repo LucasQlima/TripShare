@@ -30,6 +30,47 @@ function recuperarFeed() {
     return database.executar(instrucaoSql);
 }
 
+function contarComentarios(fkPublicacao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function contarComentarios():");
+
+    var instrucaoSql = `
+                SELECT 
+	                COUNT(idComentario) as contagem
+                FROM 
+	                TBL_COMENTARIO
+                WHERE
+	                fkPublicacao = ${fkPublicacao}
+                LIMIT 1;`;
+
+    return database.executar(instrucaoSql);
+}
+
+function mostrarComentarios(fkPublicacao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function mostrarComentarios():");
+    
+    var instrucaoSql = `
+                SELECT
+	                u.username as username,
+                    u.imgPerfil as imgPerfil,
+	                c.idComentario as idComentario,
+                    c.descricao as descricao,
+                    DATE_FORMAT(c.dtPubli, '%d/%m/%y %H : %i' ) AS dtPubli,
+                    c.curtidas as curtidas
+                FROM 
+	                TBL_USUARIO u JOIN TBL_COMENTARIO c
+		                on u.idUsuario = c.fkUsuario
+	                JOIN TBL_PUBLICACAO p
+		                on p.idPublicacao = c.fkPublicacao
+                WHERE
+                    fkPublicacao = ${fkPublicacao}
+                ORDER BY 
+                    idComentario DESC;`
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    recuperarFeed
+    recuperarFeed,
+    contarComentarios,
+    mostrarComentarios
 };

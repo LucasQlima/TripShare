@@ -33,25 +33,15 @@
                     <h3>Perfil</h3>
                 </div>
                 <div class="campo">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-plus-icon lucide-plus">
-                        <path d="M5 12h14" />
-                        <path d="M12 5v14" />
-                    </svg>
-                    <h3>Publicar</h3>
-                </div>
-                <div class="campo">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-earth-icon lucide-earth">
-                        <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" />
-                        <path
-                            d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17" />
-                        <path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05" />
-                        <circle cx="12" cy="12" r="10" />
-                    </svg>
-                    <h3>Sobre nós</h3>
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-plus-icon lucide-plus">
+                            <path d="M5 12h14" />
+                            <path d="M12 5v14" />
+                        </svg>
+                        <h3>Publicar</h3>
+                    </button>
                 </div>
                 <div class="campo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -154,7 +144,17 @@
                         <div class="expandir_comentarios">
                             <a>123 Comentários</a>
                         </div>
-                        <div class="comentarios">
+                        <div id="div_comentarios" class="comentarios">
+                            <div class="informativo_comentarios">
+                                <button class="perfil">
+                                    <img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="">
+                                    <h3>Luquinhas</h3>
+                                </button>
+                                <div class="data">
+                                    <h3>data: </h3>
+                                    <h3>30/01/2025 || 10:24</h3>
+                                </div>
+                            </div>
                             <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore similique ratione,
                                 delectus consequatur iste totam quisquam, eos et excepturi id ipsum corporis! Eum,
                                 dolorum esse? Ad soluta saepe sunt libero.</h5>
@@ -165,21 +165,7 @@
                                     <path
                                         d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                                 </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-message-circle-icon lucide-message-circle">
-                                    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
-                                    <path
-                                        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                                    <path d="M12 9v4" />
-                                    <path d="M12 17h.01" />
-                                </svg>
+                                <h4>200</h4>
                             </div>
                         </div>
                     </div>
@@ -195,6 +181,8 @@
     var username = sessionStorage.USERNAME_USUARIO;
     var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
     var idUsername = sessionStorage.ID_USUARIO;
+
+    var lista_verificador = []
 
     if (imgPerfil != null) {
         div_perfil.innerHTML = `<img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="Imagem de Perfil">
@@ -231,7 +219,7 @@
                             <h4>${item.dtPubli}</h4>
                         </div>
                     </div>
-                    <div class="publicacao">
+                    <div id="div_publicacao_${item.idPublicacao}" class="publicacao">
                         <h4>${item.descricao}</h4>
                         <div class="interacoes">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -254,54 +242,25 @@
                                 <path d="M12 17h.01" />
                             </svg>
                         </div>
-                        <div class="expandir_comentarios">
-                            <a>123 Comentários</a>
-                        </div>
-                        <div class="comentarios">
-                            <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore similique ratione,
-                                delectus consequatur iste totam quisquam, eos et excepturi id ipsum corporis! Eum,
-                                dolorum esse? Ad soluta saepe sunt libero.</h5>
-                            <div class="interacoes">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
-                                    <path
-                                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-message-circle-icon lucide-message-circle">
-                                    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
-                                    <path
-                                        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                                    <path d="M12 9v4" />
-                                    <path d="M12 17h.01" />
-                                </svg>
-                            </div>
-                        </div>
                     </div>
-                </div>`
+                </div>`;
+                        var fkPublicacao = item.idPublicacao;
+                        comentarios(fkPublicacao);
                     } else {
-                        div_feed.innerHTML += `<div class="container_conteudo">
+                        div_feed.innerHTML += `
+                    <div class="container_conteudo">
                         <div class="informativo">
-                            <div class="perfil">
+                            <button class="perfil">
                                 <img src="${item.imgPerfil}" alt="">
                                 <h3>${item.username}</h3>
-                                <img src="${item.pais}"
-                                    alt="bandeira">
-                            </div>
+                                <img src="${item.pais}" alt="bandeira">
+                            </button>
                             <div class="data">
                                 <h3>data: </h3>
                                 <h4>${item.dtPubli}</h4>
                             </div>
                         </div>
-                        <div class="publicacao">
+                        <div id="div_publicacao_${item.idPublicacao}" class="publicacao">
                             <img src="${item.imagem}">
                             <h4>${item.descricao}</h4>
                             <div class="interacoes">
@@ -325,39 +284,82 @@
                                     <path d="M12 17h.01" />
                                 </svg>
                             </div>
-                            <div class="expandir_comentarios">
-                                <a>123 Comentários</a>
-                            </div>
-                            <div class="comentarios">
-                                <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore similique ratione,
-                                    delectus consequatur iste totam quisquam, eos et excepturi id ipsum corporis! Eum,
-                                    dolorum esse? Ad soluta saepe sunt libero.</h5>
-                                <div class="interacoes">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
-                                        <path
-                                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="lucide lucide-message-circle-icon lucide-message-circle">
-                                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
-                                        <path
-                                            d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                                        <path d="M12 9v4" />
-                                        <path d="M12 17h.01" />
-                                    </svg>
-                                </div>
-                            </div>
                         </div>
-                    </div>`
+                    </div>`;
+                        var fkPublicacao = item.idPublicacao;
+                        comentarios(fkPublicacao);
+                    }
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function comentarios(fkPublicacao) {
+        fetch('/feed/contarComentarios', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fkpublicacaoServer: fkPublicacao
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                resultado.contagem;
+                const div = document.getElementById(`div_publicacao_${fkPublicacao}`);
+                if (div) {
+                    div.innerHTML += `
+                        <div class="expandir_comentarios">
+                            <button onclick="verComentarios(${fkPublicacao})">${resultado.contagem} Comentários</button>
+                            </div>
+                            `;
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+     function verComentarios(fkPublicacao) {
+         fetch('/feed/mostrarComentarios', {
+             method: "POST",
+             headers: {
+                 "Content-Type": "application/json"
+             },
+             body: JSON.stringify({
+                 fkpublicacaoServer: fkPublicacao
+             })
+         }).then((response) => {
+             response.json().then(resultado => {
+                 console.log(resultado);
+                 const div = document.getElementById(`div_publicacao_${fkPublicacao}`);
+                 if (div) {
+                     for (var i = 0; i < resultado.length; i++) {
+                         var item = resultado[i];
+                         div.innerHTML += `
+                             <div class="informativo_comentarios">
+                                 <button class="perfil">
+                                     <img src="${item.imgPerfil}" alt="">
+                                     <h3>${item.username}</h3>
+                                 </button>
+                                 <div class="data">
+                                     <h3>data: </h3>
+                                     <h3>${item.dtPubli}</h3>
+                                 </div>
+                             </div>
+                             <h5>${item.descricao}</h5>
+                             <div class="interacoes">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
+                                 <path
+                                     d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                            </svg>
+                            <h4>${item.curtidas}</h4>
+                            </div>
+                        `;
                     }
                 }
             })
