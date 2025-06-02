@@ -253,6 +253,11 @@ body {
     border-radius: 2vh;
 }
 
+.interacoes button {
+    all: unset;
+    cursor: pointer;
+}
+
 .container_conteudo .publicacao .interacoes {
     display: flex;
     flex-direction: row;
@@ -283,29 +288,25 @@ body {
     cursor: pointer;
 }
 
-.container_conteudo .publicacao .comentarios {
+.informativo_comentarios {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.8vh;
     width: 70vh;
     font-weight: 300;
-    font-size: 2vh;
     color: rgb(118, 120, 123);
     margin-bottom: 2vh;
     margin-left: 3vh;
 }
 
-.container_conteudo .publicacao .comentarios svg{
+.informativo_comentarios svg{
     color: rgb(118, 120, 123);
     width: 2vh;
     height: fit-content;
 }
 
-.container_conteudo .informativo_comentarios {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 1.8vh;
-}
-
-.container_conteudo .informativo_comentarios .perfil {
+.informativo_comentarios .perfil {
     all: unset;
     display: flex;
     flex-direction: row;
@@ -314,12 +315,12 @@ body {
     margin-bottom: 0%;
 }
 
-.container_conteudo .informativo_comentarios .perfil img {
+.informativo_comentarios .perfil img {
     width: 3.5vh;
     height: fit-content;
 }
 
-.container_conteudo .informativo_comentarios .data {
+.informativo_comentarios .data {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -328,4 +329,5 @@ body {
 
 .container_conteudo h5 {
     margin: 0%;
+    margin-bottom: 2px;
 }

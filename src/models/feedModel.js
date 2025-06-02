@@ -54,7 +54,7 @@ function mostrarComentarios(fkPublicacao) {
                     u.imgPerfil as imgPerfil,
 	                c.idComentario as idComentario,
                     c.descricao as descricao,
-                    DATE_FORMAT(c.dtPubli, '%d/%m/%y %H : %i' ) AS dtPubli,
+                    DATE_FORMAT(c.dtPubli, '%d/%m/%y %H:%i' ) AS dtPubli,
                     c.curtidas as curtidas
                 FROM 
 	                TBL_USUARIO u JOIN TBL_COMENTARIO c
