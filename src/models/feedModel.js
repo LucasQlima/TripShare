@@ -69,8 +69,20 @@ function mostrarComentarios(fkPublicacao) {
     return database.executar(instrucaoSql);
 }
 
+function denunciarPublicacao(idPublicacao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function contarComentarios():");
+
+    var instrucaoSql = `
+                UPDATE TBL_PUBLICACAO, (select r.denuncias FROM TBL_PUBLICACAO as r WHERE idPublicacao = ${idPublicacao}) as b 
+                SET TBL_PUBLICACAO.denuncias = b.denuncias + 1
+                WHERE TBL_PUBLICACAO.idPublicacao = ${idPublicacao};`;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
-    mostrarComentarios
+    mostrarComentarios,
+    denunciarPublicacao
 };

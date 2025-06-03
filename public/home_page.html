@@ -182,8 +182,6 @@
     var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
     var idUsername = sessionStorage.ID_USUARIO;
 
-    var lista_verificador = []
-
     if (imgPerfil != null) {
         div_perfil.innerHTML = `<img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="Imagem de Perfil">
         <h3>${username}</h3>`
@@ -203,6 +201,7 @@
                 console.log(resultado);
                 for (var i = 0; i < resultado.length; i++) {
                     var item = resultado[i];
+                    var idPublicacao = item.idPublicacao;
 
                     if (item.imagem == null) {
                         div_feed.innerHTML += `
@@ -231,14 +230,14 @@
                                 </svg>
                             </button>
                             <h4>${item.curtidas}</h4>
-                            <button>
+                            <button onclick="adicionarComentario()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-message-circle-icon lucide-message-circle">
                                     <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
                                 </svg>
                             </button>
-                            <button>
+                            <button onclick="denunciar(${idPublicacao})">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
@@ -279,14 +278,14 @@
                                     </svg>
                                 </button>
                                 <h4>${item.curtidas}</h4>
-                                <button>
+                                <button onclick="adicionarComentario()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-message-circle-icon lucide-message-circle">
                                     <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
                                     </svg>
                                 </button>
-                                <button>
+                                <button onclick="denunciar(${idPublicacao})">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
@@ -375,6 +374,24 @@
                         `;
                     }
                 }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function denunciar(idPublicacao) {
+        fetch('/feed/denunciarPublicacao', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idpublicacaoServer: idPublicacao
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                alert('Publicação denunciada!')
             })
         }).catch(() => {
             console.log("deu ruim")

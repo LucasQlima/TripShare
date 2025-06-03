@@ -92,8 +92,28 @@ function mostrarComentarios(req, res) {
         );
 }
 
+function denunciarPublicacao(req, res) {
+    var idPublicacao = req.body.idpublicacaoServer;
+
+    feedModel.denunciarPublicacao(idPublicacao)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o update de denuncias! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
-    mostrarComentarios
+    mostrarComentarios,
+    denunciarPublicacao
 }

@@ -15,5 +15,10 @@ router.post("/mostrarComentarios", function (req, res) {
     feedController.mostrarComentarios(req, res);
 });
 
+router.post("/denunciarPublicacao", function (req, res) {
+    feedController.denunciarPublicacao(req, res);
+});
+
+
 
 module.exports = router;
