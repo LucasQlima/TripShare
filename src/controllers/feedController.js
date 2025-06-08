@@ -9,6 +9,7 @@ function recuperarFeed(req, res) {
 
                 if (resultado.length >= 1) {
                     const feedFormatado = resultado.map(item => ({
+                        idUsuario: item.idUsuario,
                         username: item.username,
                         imgPerfil: item.imgPerfil,
                         idPublicacao: item.idPublicacao,
@@ -111,9 +112,31 @@ function denunciarPublicacao(req, res) {
         );
 }
 
+function comentarPubli(req, res) {
+    var comentario = req.body.comentarioServer;
+    var fkPublicacao = req.body.idpublicacaoServer;
+    var fkUsuario = req.body.idusuarioServer;
+
+    feedModel.comentarPubli(comentario, fkPublicacao, fkUsuario)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o insert de um comentario! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
     mostrarComentarios,
-    denunciarPublicacao
+    denunciarPublicacao,
+    comentarPubli
 }

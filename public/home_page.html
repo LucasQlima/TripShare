@@ -230,7 +230,7 @@
                                 </svg>
                             </button>
                             <h4>${item.curtidas}</h4>
-                            <button onclick="adicionarComentario()">
+                            <button onclick="adicionarComentario(${item.idPublicacao})">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-message-circle-icon lucide-message-circle">
@@ -278,7 +278,7 @@
                                     </svg>
                                 </button>
                                 <h4>${item.curtidas}</h4>
-                                <button onclick="adicionarComentario()">
+                                <button onclick="adicionarComentario(${item.idPublicacao},${item.idUsuario})">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-message-circle-icon lucide-message-circle">
@@ -297,6 +297,7 @@
                             </div>
                         </div>
                     </div>`;
+                        var fkUsuario = item.idUsuario;
                         var fkPublicacao = item.idPublicacao;
                         comentarios(fkPublicacao);
                     }
@@ -322,9 +323,9 @@
                 const div = document.getElementById(`div_publicacao_${fkPublicacao}`);
                 if (div) {
                     div.innerHTML += `
-                        <div class="expandir_comentarios">
-                            <button onclick="verComentarios(${fkPublicacao})">${resultado.contagem} Comentários</button>
-                            </div>
+                        <div id="expandir_comentarios_${fkPublicacao}" class="expandir_comentarios">
+                            <button onclick="verComentarios(${fkPublicacao})" class="button_expandir">${resultado.contagem} Comentários</button>
+                        </div>
                             `;
                 }
             })
@@ -333,45 +334,52 @@
         })
     }
 
-     function verComentarios(fkPublicacao) {
-         fetch('/feed/mostrarComentarios', {
-             method: "POST",
-             headers: {
-                 "Content-Type": "application/json"
-             },
-             body: JSON.stringify({
-                 fkpublicacaoServer: fkPublicacao
-             })
-         }).then((response) => {
-             response.json().then(resultado => {
-                 console.log(resultado);
-                 const div = document.getElementById(`div_publicacao_${fkPublicacao}`);
-                 if (div) {
-                     for (var i = 0; i < resultado.length; i++) {
-                         var item = resultado[i];
-                         div.innerHTML += `
+    function verComentarios(fkPublicacao) {
+        fetch('/feed/mostrarComentarios', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fkpublicacaoServer: fkPublicacao
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                const div = document.getElementById(`div_publicacao_${fkPublicacao}`);
+                let mensagemTemp = div.innerHTML;
+                if (div) {
+                    for (var i = 0; i < resultado.length; i++) {
+                        var item = resultado[i];
+                        mensagemTemp += `
                              <div class="informativo_comentarios">
-                                 <button class="perfil">
-                                     <img src="${item.imgPerfil}" alt="">
-                                     <h3>${item.username}</h3>
-                                 </button>
-                                 <div class="data">
-                                     <h3>data: </h3>
-                                     <h3>${item.dtPubli}</h3>
-                                 </div>
-                             </div>
-                             <h5>${item.descricao}</h5>
-                             <div class="interacoes">
+                                <button class="perfil">
+                                  <img src="${item.imgPerfil}" alt="">
+                                  <h3>${item.username}</h3>
+                                </button>
+                                <div class="data">
+                                  <h3>data:</h3>
+                                  <h3>${``}${item.dtPubli}</h3>
+                                </div>
+                              </div>
+                              <div class="comentario_texto">${item.descricao}</div>
+                              <div class="interacoes">
                                 <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
                                     <path
-                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                                    </svg>
+                                      d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                                  </svg>
                                 </button>
-                            </div>
+                                <h4>${item.curtidas}</h4>
+                              </div>
                         `;
+                    }
+                    div.innerHTML = mensagemTemp;
+                    const botao = document.querySelector(`#expandir_comentarios_${fkPublicacao} .button_expandir`);
+                    if (botao) {
+                        botao.disabled = true; // Desativa o botão
                     }
                 }
             })
@@ -392,6 +400,39 @@
         }).then((response) => {
             response.json().then(resultado => {
                 alert('Publicação denunciada!')
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function adicionarComentario(fkPublicacao) {
+        const div = document.getElementById(`expandir_comentarios_${fkPublicacao}`);
+        div.innerHTML = `<input type="text" placeholder="Adicione um comentario" class="input_comentario" id="input_comentario_${fkPublicacao}">
+                        <button onclick="comentar(${fkPublicacao})" class="button_comentar">Comentar</button>`;
+    }
+
+    function comentar(fkPublicacao) {
+        var comentario = document.getElementById(`input_comentario_${fkPublicacao}`).value;
+
+        fetch('/feed/comentarPubli', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                comentarioServer: comentario,
+                idpublicacaoServer: fkPublicacao,
+                idusuarioServer: idUsername
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                const div_desapear = document.getElementById(`expandir_comentarios_${fkPublicacao}`);
+                if (div_desapear) {
+                    div_desapear.innerHTML = ``;
+                }
+                verComentarios(fkPublicacao);
             })
         }).catch(() => {
             console.log("deu ruim")

@@ -11,8 +11,8 @@ CREATE TABLE TBL_PAIS (
 
 CREATE TABLE TBL_USUARIO (
 	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(30) NOT NULL UNIQUE,
-    email VARCHAR(200) NOT NULL UNIQUE,
+    username VARCHAR(30) NOT NULL,
+    email VARCHAR(200) NOT NULL,
     senha VARCHAR(20) NOT NULL,
     imgPerfil VARCHAR(400) DEFAULT 'https://i.pinimg.com/474x/a8/da/22/a8da222be70a71e7858bf752065d5cc3.jpg',
     fkPais INT,
@@ -21,35 +21,29 @@ CREATE TABLE TBL_USUARIO (
 );
 
 CREATE TABLE TBL_PUBLICACAO (
-	idPublicacao INT AUTO_INCREMENT,
+	idPublicacao INT AUTO_INCREMENT PRIMARY KEY,
     descricao VARCHAR(400) NOT NULL,
     dtPubli DATETIME NOT NULL,
     denuncias INT,
-    fkUsuario INT,
-    CONSTRAINT pksPublicacao PRIMARY KEY (idPublicacao, fkUsuario),
+    fkUsuario INT NOT NULL,
     CONSTRAINT fkPublicacaoUsuario FOREIGN KEY (fkUsuario)
 		REFERENCES TBL_USUARIO(idUsuario)
 );
 
-CREATE TABLE TBL_IMAGEM(
-	idImagem INT AUTO_INCREMENT,
-    imagem VARCHAR(400) ,
-    fkPublicacao INT,
-    CONSTRAINT pksImagem PRIMARY KEY (idImagem, fkPublicacao),
+CREATE TABLE TBL_IMAGEM (
+	idImagem INT AUTO_INCREMENT PRIMARY KEY,
+    imagem VARCHAR(400),
+    fkPublicacao INT NOT NULL,
     CONSTRAINT fkImagemPublicacao FOREIGN KEY (fkPublicacao)
 		REFERENCES TBL_PUBLICACAO(idPublicacao)
 );
 
 CREATE TABLE TBL_COMENTARIO (
-	idComentario INT AUTO_INCREMENT,
+	idComentario INT AUTO_INCREMENT PRIMARY KEY,
     descricao VARCHAR(400) NOT NULL,
     dtPubli DATETIME NOT NULL DEFAULT current_timestamp,
-    fkComentario INT,
-    fkPublicacao INT,
-    fkUsuario INT,
-    CONSTRAINT pksComentario PRIMARY KEY (idComentario, fkPublicacao, fkUsuario),
-	CONSTRAINT fkComentarioComentario FOREIGN KEY (fkComentario)
-		REFERENCES TBL_COMENTARIO(idComentario),
+    fkPublicacao INT NOT NULL,
+    fkUsuario INT NOT NULL,
 	CONSTRAINT fkComentarioPublicacao FOREIGN KEY (fkPublicacao)
 		REFERENCES TBL_PUBLICACAO(idPublicacao),
 	CONSTRAINT fkComentarioUsuario FOREIGN KEY (fkUsuario)
@@ -57,10 +51,9 @@ CREATE TABLE TBL_COMENTARIO (
 );
 
 CREATE TABLE TBL_CONQUISTA (
-	idConquista INT AUTO_INCREMENT,
-    fkPublicacao INT,
-    fkPais INT,
-    CONSTRAINT pksConquista PRIMARY KEY (idConquista, fkPublicacao, fkPais),
+	idConquista INT AUTO_INCREMENT PRIMARY KEY,
+    fkPublicacao INT NOT NULL,
+    fkPais INT NOT NULL,
     CONSTRAINT fkConquistaPublicacao FOREIGN KEY (fkPublicacao)
 		REFERENCES TBL_PUBLICACAO(idPublicacao),
 	CONSTRAINT fkConquistaPais FOREIGN KEY (fkPais)
@@ -68,10 +61,9 @@ CREATE TABLE TBL_CONQUISTA (
 );
 
 CREATE TABLE TBL_ATIVIDADE_PUBLI (
-	idAtividadePubli INT AUTO_INCREMENT,
-    fkUsuario INT,
-    fkPublicacao INT,
-    CONSTRAINT pkComposta PRIMARY KEY (idAtividadePubli, fkUsuario, fkPublicacao),
+	idAtividadePubli INT AUTO_INCREMENT PRIMARY KEY,
+    fkUsuario INT NOT NULL,
+    fkPublicacao INT NOT NULL,
     CONSTRAINT fkAtvPubliUsuario FOREIGN KEY (fkUsuario)
 		REFERENCES TBL_USUARIO(idUsuario),
 	CONSTRAINT fkAtvPubliPublicacao FOREIGN KEY (fkPublicacao)
@@ -79,11 +71,10 @@ CREATE TABLE TBL_ATIVIDADE_PUBLI (
 );
 
 CREATE TABLE TBL_ATIVIDADE_COMENT (
-	idAtividadeComent INT AUTO_INCREMENT,
-    fkUsuario INT,
-    fkPublicacao INT,
-    fkComentario INT,
-    CONSTRAINT pkComposta PRIMARY KEY (idAtividadeComent, fkUsuario, fkPublicacao, fkComentario),
+	idAtividadeComent INT AUTO_INCREMENT PRIMARY KEY,
+    fkUsuario INT NOT NULL,
+    fkPublicacao INT NOT NULL,
+    fkComentario INT NOT NULL,
     CONSTRAINT fkAtvComentUsuario FOREIGN KEY (fkUsuario)
 		REFERENCES TBL_USUARIO(idUsuario),
 	CONSTRAINT fkAtvComentPublicacao FOREIGN KEY (fkPublicacao)
@@ -91,9 +82,6 @@ CREATE TABLE TBL_ATIVIDADE_COMENT (
 	CONSTRAINT fkAtvComentComentario FOREIGN KEY (fkComentario)
 		REFERENCES TBL_COMENTARIO(idComentario)
 );
-
-
--- INSERÇÕES --
 
 -- INSERT GERADO ATRAVES DE API
 
@@ -348,7 +336,8 @@ INSERT INTO TBL_PAIS (nome, bandeira, votos) VALUES ('Somalia','https://flagcdn.
 INSERT INTO TBL_PAIS (nome, bandeira, votos) VALUES ('Kenya','https://flagcdn.com/w320/ke.png',NULL);
 INSERT INTO TBL_PAIS (nome, bandeira, votos) VALUES ('Nauru','https://flagcdn.com/w320/nr.png',NULL);
 
--- Users  
+-- Users
+    
 INSERT INTO TBL_USUARIO (username, email, senha, fkPais) VALUES 
 ('joaosilva', 'joao.silva@email.com', 'senha123', 8),   -- Brasil
 ('mariasantos', 'maria.santos@email.com', 'mari456', 20), -- Áustria
@@ -358,95 +347,94 @@ INSERT INTO TBL_USUARIO (username, email, senha, fkPais) VALUES
 ('luquinhas', 'lucas@lima', '1234ABC', 4);
 
 -- Publi
-INSERT INTO TBL_PUBLICACAO (descricao, dtPubli, denuncias, fkUsuario) VALUES
-('Hoje fui ao Corcovado e vi o Cristo Redentor. Que vista espetacular!', '2025-06-04 08:30:00', 0, 1), -- João (Brasil)
-('Passeando pelos castelos antigos aqui na Áustria. Incrível história!', '2025-06-04 10:15:00', 0, 2), -- Maria (Áustria)
-('Cervejas artesanais em Munique são únicas. Alemanha surpreende!', '2025-06-04 12:00:00', 0, 3); -- Pedro (Alemanha)
 
-INSERT INTO TBL_PUBLICACAO (descricao, dtPubli, curtidas, denuncias, fkUsuario) VALUES 
-('Adorei minha viagem para o Rio de Janeiro!', '2023-05-15 14:30:00', 120, 2, 1),
-('As montanhas da Áustria são incríveis!', '2023-06-20 09:15:00', 85, 1, 2),
-('Conheci Berlim e foi uma experiência única!', '2023-07-10 18:45:00', 200, 5, 3),
-('Lisboa é uma cidade encantadora!', '2023-08-05 11:20:00', 150, 0, 4),
-('Nova York nunca dorme!', '2023-09-12 22:10:00', 300, 3, 5);
+INSERT INTO TBL_PUBLICACAO (descricao, dtPubli, denuncias, fkUsuario) VALUES
+('Visitando o Cristo Redentor pela primeira vez!', NOW(), 0, 1), -- joaosilva / Brasil
+('Passeio de bicicleta ao longo do Danúbio!', NOW(), 0, 2),      -- mariasantos / Áustria
+('Arquitetura impressionante em Munique.', NOW(), 1, 3),         -- pedroalves / Alemanha
+('Caminhada por Lisboa com muito pastel de nata!', NOW(), 0, 4), -- anacarvalho / Portugal
+('Feriado no Grand Canyon, experiência inesquecível!', NOW(), 0, 5); -- carlosrodrigues / EUA
 
 -- Imagem
-INSERT INTO TBL_IMAGEM (imagem, fkPublicacao) VALUES
-('cristo_redentor_view.jpg', 1),
-('castelo_viena.jpg', 2),
-('cerveja_munique.jpg', 3);
 
-INSERT INTO TBL_IMAGEM (imagem, fkPublicacao) VALUES 
-('https://images.pexels.com/photos/1804177/pexels-photo-1804177.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', 1),
-(NULL, 2),
-('https://images.pexels.com/photos/1128408/pexels-photo-1128408.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', 3),
-('https://images.pexels.com/photos/1534560/pexels-photo-1534560.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', 4),
-(NULL, 5);
+INSERT INTO TBL_IMAGEM (imagem, fkPublicacao) VALUES
+('https://cdn.pixabay.com/photo/2017/03/31/15/49/cristo-redentor-2191673_1280.jpg', 1),
+('https://www.pedalareviajar.com.br/wp-content/uploads/2020/03/20190921_151959.jpg', 2),
+('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/24/5a/48/new-town-hall-neus-rathaus.jpg?w=1000&h=800&s=1', 3),
+('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/84/c5/8b/desde-1837.jpg?w=1400&h=800&s=1', 4),
+('https://s2.glbimg.com/4RDNeI6pAs-e6D6oQm_rggyT2AE=/e.glbimg.com/og/ed/f/original/2019/04/13/fotos_canyon_marilia1.jpg', 5);
 
 -- Comentarios
--- Comentários para publicação 1 (João - Cristo Redentor)
-INSERT INTO TBL_COMENTARIO (descricao, dtPubli, fkComentario, fkPublicacao, fkUsuario) VALUES
-('Sempre tive vontade de ir lá!', '2025-06-04 08:45:00', NULL, 1, 2),
-('A vista do alto é de tirar o fôlego!', '2025-06-04 09:00:00', NULL, 1, 4),
--- Comentários para publicação 2 (Maria - Castelos na Áustria)
-('Quais castelos você visitou?', '2025-06-04 10:30:00', NULL, 2, 1),
-('Áustria é mesmo um país encantador.', '2025-06-04 10:45:00', NULL, 2, 5),
--- Comentários para publicação 3 (Pedro - Cervejas na Alemanha)
-('Já provou a Weissbier? É minha favorita!', '2025-06-04 12:20:00', NULL, 3, 6),
-('Posta mais dicas de cervejarias por aí!', '2025-06-04 12:40:00', NULL, 2, 1);
 
-INSERT INTO TBL_COMENTARIO (descricao, dtPubli, curtidas, fkPublicacao, fkUsuario) VALUES 
-('O Rio é realmente maravilhoso!', '2023-05-15 15:45:00', 30, 1, 2),
-('Quero muito visitar a Áustria também!', '2023-06-20 10:30:00', 15, 2, 3),
-('Berlim tem uma história fascinante!', '2023-07-10 19:20:00', 50, 3, 4),
-('Concordo, Lisboa é encantadora!', '2023-08-05 12:45:00', 25, 4, 5),
-('Nova York é a cidade dos sonhos!', '2023-09-12 23:30:00', 70, 5, 1),
-('O Cristo Redentor é realmente emocionante de ver!', '2023-09-20 10:15:00', 22, 1, 3),
-('As paisagens da Áustria parecem saídas de um conto de fadas.', '2023-09-25 14:30:00', 18, 2, 4),
-('Fui a Berlim no inverno, foi incrível!', '2023-10-01 19:00:00', 27, 3, 5),
-('Lisboa tem uma vibe muito acolhedora.', '2023-10-10 11:45:00', 19, 4, 1),
-('Nova York é cheia de energia, amei cada segundo!', '2023-10-18 22:00:00', 34, 5, 2),
-('Voltei do Rio com fotos maravilhosas!', '2023-10-25 13:15:00', 20, 1, 5),
-('Áustria no inverno é puro charme.', '2023-11-02 08:50:00', 16, 2, 1),
-('Em Berlim tudo respira história, muito interessante.', '2023-11-10 17:20:00', 29, 3, 2),
-('Lisboa tem doces incríveis, recomendo os pastéis de nata!', '2023-11-15 16:05:00', 23, 4, 3),
-('Assistir a um musical na Broadway foi um sonho!', '2023-11-22 21:10:00', 31, 5, 4);
+-- Comentários para publicação 1 (Brasil)
+INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+('Demais! Quero visitar também.', 1, 2),
+('Já fui, é lindo demais!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', 1, 4);
+
+-- Comentários para publicação 2 (Áustria)
+INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+('Amo esse tipo de passeio!', 2, 3),
+('Fotos lindas!', 2, 1);
+
+-- Comentários para publicação 3 (Alemanha)
+INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+('Munique é top demais!', 3, 5),
+('A arquitetura é mesmo surreal.', 3, 2);
+
+-- Comentários para publicação 4 (Portugal)
+INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+('Fiquei com vontade de comer pastel agora.', 4, 1),
+('Lisboa é maravilhosa!', 4, 3);
+
+-- Comentários para publicação 5 (EUA)
+INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+('Incrível! Deve ser emocionante ver de perto.', 5, 2),
+('Sempre sonhei em ir aí.', 5, 4);
 
 -- Conquistas
+
 INSERT INTO TBL_CONQUISTA (fkPublicacao, fkPais) VALUES
-(1, 8),   -- Brasil (Cristo Redentor)
-(2, 20),  -- Áustria (castelos)
-(3, 57);  -- Alemanha (cervejas)
+(1, 8),    -- Brasil
+(2, 20),   -- Áustria
+(3, 57),   -- Alemanha
+(4, 144),  -- Portugal
+(5, 107);  -- EUA
 
-INSERT INTO TBL_CONQUISTA (fkPublicacao, fkPais) VALUES 
-(1, 8),
-(2, 20),
-(3, 57),
-(4, 144), 
-(5, 107); 
+-- ATV_Publi
 
--- atvPubli
 INSERT INTO TBL_ATIVIDADE_PUBLI (fkUsuario, fkPublicacao) VALUES
-(2, 1), -- Maria viu a publicação de João
-(1, 1), -- João viu a publicação de João
-(4, 1), -- Ana viu a publicação de João
-(1, 2), -- João viu a publicação da Maria
-(5, 2), -- Carlos viu a publicação da Maria
-(6, 3), -- Lucas viu a publicação do Pedro
-(2, 3); -- Maria viu a publicação do Pedro
+(2, 1), (3, 1),         -- 2 curtidas pub 1
+(1, 2), (4, 2), (5, 2), -- 3 curtidas pub 2
+(1, 3),                 -- 1 curtida pub 3
+(2, 4), (5, 4),         -- 2 curtidas pub 4
+(1, 5), (2, 5), (3, 5); -- 3 curtidas pub 5
 
--- atvComent
--- Atividades em comentários da publicação 1
+-- ATV_Coment
+
+-- Atividades nos comentários da publicação 1
 INSERT INTO TBL_ATIVIDADE_COMENT (fkUsuario, fkPublicacao, fkComentario) VALUES
-(1, 1, 1),
-(1, 1, 2),
--- Atividades em comentários da publicação 2
-(2, 2, 3),
-(2, 2, 4),
--- Atividades em comentários da publicação 3
-(3, 3, 5),
-(3, 3, 6);
+(3, 1, 1),
+(5, 1, 2);
 
+-- Publicação 2
+INSERT INTO TBL_ATIVIDADE_COMENT (fkUsuario, fkPublicacao, fkComentario) VALUES
+(5, 2, 3),
+(4, 2, 4);
+
+-- Publicação 3
+INSERT INTO TBL_ATIVIDADE_COMENT (fkUsuario, fkPublicacao, fkComentario) VALUES
+(1, 3, 5),
+(4, 3, 6);
+
+-- Publicação 4
+INSERT INTO TBL_ATIVIDADE_COMENT (fkUsuario, fkPublicacao, fkComentario) VALUES
+(5, 4, 7),
+(2, 4, 8);
+
+-- Publicação 5
+INSERT INTO TBL_ATIVIDADE_COMENT (fkUsuario, fkPublicacao, fkComentario) VALUES
+(1, 5, 9),
+(3, 5, 10);
 
 
 
@@ -479,24 +467,33 @@ WHERE
 -- ------------------------------------------------------------
 
 SELECT 
-	u.username AS username,
-	p.idPublicacao AS idPublicacao,
-	p.descricao AS descricao,
-	DATE_FORMAT(p.dtPubli, '%d/%m/%y %H:%i') AS dtPubli,
-	COUNT(ap.idAtividadePubli) AS curtidas,
-	p.denuncias AS denuncias,
-	i.imagem AS imagem,
-	pa.bandeira AS pais
+    u.username AS username,
+    u.imgPerfil AS imgPerfil,
+    p.idPublicacao AS idPublicacao,
+    p.descricao AS descricao,
+    DATE_FORMAT(p.dtPubli, '%d/%m/%y %H:%i') AS dtPubli,
+    COUNT(ap.idAtividadePubli) AS curtidas,
+    p.denuncias AS denuncias,
+    i.imagem AS imagem,
+    pa.bandeira AS pais
 FROM 
-	TBL_USUARIO u
-JOIN TBL_PUBLICACAO p ON u.idUsuario = p.fkUsuario
-LEFT JOIN TBL_ATIVIDADE_PUBLI ap ON p.idPublicacao = ap.fkPublicacao
-LEFT JOIN TBL_IMAGEM i ON p.idPublicacao = i.fkPublicacao
-LEFT JOIN TBL_CONQUISTA c ON p.idPublicacao = c.fkPublicacao
-LEFT JOIN TBL_PAIS pa ON pa.idPais = c.fkPais
+    TBL_PUBLICACAO p
+JOIN TBL_USUARIO u ON p.fkUsuario = u.idUsuario
+LEFT JOIN TBL_ATIVIDADE_PUBLI ap ON ap.fkPublicacao = p.idPublicacao
+LEFT JOIN TBL_IMAGEM i ON i.fkPublicacao = p.idPublicacao
+LEFT JOIN TBL_CONQUISTA c ON c.fkPublicacao = p.idPublicacao
+LEFT JOIN TBL_PAIS pa ON c.fkPais = pa.idPais
 GROUP BY 
-	p.idPublicacao, u.username, p.descricao, p.dtPubli, p.denuncias, i.imagem, pa.bandeira
-ORDER BY p.dtPubli DESC;
+    p.idPublicacao,
+    u.username,
+    u.imgPerfil,
+    p.descricao,
+    p.dtPubli,
+    p.denuncias,
+    i.imagem,
+    pa.bandeira
+ORDER BY 
+    p.dtPubli DESC;
 -- ------------------------------------------------------------
 
 SELECT 
@@ -508,19 +505,27 @@ WHERE
 -- ------------------------------------------------------------
 
 SELECT
-	u.username as username,
-    u.imgPerfil as imgPerfil,
-	c.idComentario as idComentario,
-    c.descricao as descricao,
-    DATE_FORMAT(c.dtPubli, '%d/%m/%y %H:%i' ) AS dtPubli,
-    c.curtidas as curtidas
+    u.username AS username,
+    u.imgPerfil AS imgPerfil,
+    c.idComentario AS idComentario,
+    c.descricao AS descricao,
+    DATE_FORMAT(c.dtPubli, '%d/%m/%y %H:%i') AS dtPubli,
+    COUNT(ac.idAtividadeComent) AS curtidas
 FROM 
-	TBL_USUARIO u JOIN TBL_COMENTARIO c
-		on u.idUsuario = c.fkUsuario
-	JOIN TBL_PUBLICACAO p
-		on p.idPublicacao = c.fkPublicacao
-	ORDER BY idComentario DESC;
-    
+    TBL_COMENTARIO c
+JOIN TBL_USUARIO u ON u.idUsuario = c.fkUsuario
+JOIN TBL_PUBLICACAO p ON p.idPublicacao = c.fkPublicacao
+LEFT JOIN TBL_ATIVIDADE_COMENT ac 
+    ON ac.fkComentario = c.idComentario 
+    AND ac.fkPublicacao = c.fkPublicacao
+GROUP BY
+    c.idComentario,
+    u.username,
+    u.imgPerfil,
+    c.descricao,
+    c.dtPubli
+ORDER BY 
+    c.idComentario DESC;    
 -- ------------------------------------------------------------
 
 
@@ -529,6 +534,12 @@ FROM
 
 -- UPDATES
 
-UPDATE TBL_PUBLICACAO, (select r.denuncias FROM TBL_PUBLICACAO as r WHERE idPublicacao = 1) as b 
+UPDATE TBL_PUBLICACAO, (select r.denuncias FROM TBL_PUBLICACAO as r WHERE idRegistro = 1) as b 
 SET TBL_PUBLICACAO.denuncias = b.denuncias + 1
 WHERE TBL_PUBLICACAO.idPublicacao = 1;
+
+
+-- INSERTS
+
+INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+('Demais! Quero visitar também.', 1, 2);

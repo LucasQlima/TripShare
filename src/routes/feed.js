@@ -19,6 +19,8 @@ router.post("/denunciarPublicacao", function (req, res) {
     feedController.denunciarPublicacao(req, res);
 });
 
-
+router.post("/comentarPubli", function (req, res) {
+    feedController.comentarPubli(req, res);
+});
 
 module.exports = router;

@@ -278,7 +278,7 @@ body {
     font-size: 2.3vh;
 }
 
-.container_conteudo .publicacao .expandir_comentarios button {
+.container_conteudo .publicacao .expandir_comentarios .button_expandir {
     all: unset;
     width: 70vh;
     font-weight: 300;
@@ -327,7 +327,35 @@ body {
     font-weight: 300;
 }
 
-.container_conteudo h5 {
-    margin: 0%;
-    margin-bottom: 2px;
+.comentario_texto {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 60%;
+  color: white; /* ou a cor desejada */
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+
+
+
+.input_comentario {
+    all: unset;
+    height: 7vh;
+    width: 70vh;
+    background-color: rgba(7, 8, 86, 0.215);
+    border: 2px solid white;
+    border-radius: 5%;
+    padding-left: 3vh;
+    margin-bottom: 2vh;
+}
+
+.button_comentar {
+    all: unset;
+    background-color: rgba(10, 10, 94, 0.27);
+    color: rgb(213, 213, 255);
+    border: 2px solid white;
+    border-radius: 10%;
+    height: 6.9vh;
 }
