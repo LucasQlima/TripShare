@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripShare || Home Page</title>
+    <link rel="stylesheet" href="\Style\style_dashboard.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .logo h3 {
+        font-family: "Sofia", sans-serif;
+    }
+
+    .title {
+        all: unset;
+        font-family: "Sofia", sans-serif;
+        color: rgb(244, 255, 231);
+        font-size: 9vh;
+        margin-top: 2vh;
+
+    }
+</style>
+
+<body onload="dadosDash(), kpiTotalVotos(), kpiVoto(), kpiMaisPubli(), listarPaises()">
+    <div class="container">
+        <div class="container_nav_left">
+            <div class="container_campos">
+                <a href="home_page.html" class="logo">
+                    <h3>TripShare</h3>
+                    <img src="../img/logo.png" alt="Logo">
+                </a>
+                <div class="campo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-circle-user-icon lucide-circle-user">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="10" r="3" />
+                        <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+                    </svg>
+                    <a href="perfil_page.html">Perfil</a>
+                </div>
+                <div class="campo">
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-plus-icon lucide-plus">
+                            <path d="M5 12h14" />
+                            <path d="M12 5v14" />
+                        </svg>
+                        <a href="publicar_page.html">Publicar</a>
+                    </button>
+                </div>
+                <div class="campo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-chart-column-icon lucide-chart-column">
+                        <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+                        <path d="M18 17V9" />
+                        <path d="M13 17V5" />
+                        <path d="M8 17v-3" />
+                    </svg>
+                    <a href="dashboard_page.html">Dashboard</a>
+                </div>
+            </div>
+            <div class="container_perfil">
+                <div class="perfil" id="div_perfil"></div>
+                <div class="campo_sair">
+                    <button onclick="sair()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-log-out-icon lucide-log-out">
+                            <path d="m16 17 5-5-5-5" />
+                            <path d="M21 12H9" />
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        </svg>
+                        <h3>SAIR</h3>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container_column">
+            <h1 class="title">Dashboard</h1>
+            <div id="div_feed" class="container_conteudo">
+                <div class="container_kpis">
+                    <div class="kpi">
+                        <h3>Quantidade total de votos</h3>
+                        <h3 id="kpi_total" style="color: rgb(244, 255, 231);"></h3>
+                    </div>
+                    <div class="kpi">
+                        <h3>Ultimo pais em que votou</h3>
+                        <h3 id="kpi_voto" style="color: rgb(244, 255, 231);">Angola</h3>
+                    </div>
+                    <div class="kpi">
+                        <h3>Pais com mais publicações</h3>
+                        <h3 id="kpi_publi" style="color: rgb(244, 255, 231);">Bangladash</h3>
+                    </div>
+                </div>
+                <canvas id="graficoPublicacoes" width="400" height="200" class="graficoPublicacoes"></canvas>
+                <div class="container_votacao">
+                    <select id="select_paises" calss="select_text"></select>
+                    <button class="botao_votar" onclick="votarFkVoto(), votar()">Votar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    var username = sessionStorage.USERNAME_USUARIO;
+    var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
+    var idUsername = sessionStorage.ID_USUARIO;
+    var lista_paises = [];
+    var lista_votos = [];
+
+    function dadosDash() {
+        fetch('/dashboard/dadosDash', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                for (var i = 0; i < resultado.length; i++) {
+                    var item = resultado[i];
+                    lista_paises.push(item.nome);
+                    lista_votos.push(item.votos);
+                }
+                gerarGrafico();
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function gerarGrafico(){
+        const ctx = document.getElementById('graficoPublicacoes').getContext('2d');
+        const grafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [lista_paises[3], lista_paises[1], lista_paises[0], lista_paises[2], lista_paises[4]],
+                datasets: [{
+                    label: 'Países',
+                    data: [lista_votos[3], lista_votos[1], lista_votos[0], lista_votos[2], lista_votos[4]],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Países com mais votos',
+                        font: {
+                            size: 20
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 10
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    function listarPaises() {
+        fetch('/usuarios/buscarPaises', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                for (var i = 0; i < resultado.length; i++) {
+                    var item = resultado[i];
+
+                    select_paises.innerHTML += `<option value="${item.identificador}"><img src="${item.bandeira}">${item.pais}</option>`
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function kpiTotalVotos() {
+        fetch('/dashboard/kpiTotalVotos', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                kpi_total.innerHTML = resultado[0].total
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function kpiMaisPubli() {
+        fetch('/dashboard/kpiMaisPubli', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                kpi_publi.innerHTML = resultado[0].pais
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function kpiVoto() {
+        fetch('/dashboard/kpiVoto', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                kpi_voto.innerHTML = resultado[0].voto
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function votarFkVoto() {
+        var idPais = select_paises.value
+
+        fetch('/dashboard/votarFkVoto', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername,
+                idpaisServer: idPais
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function votar() {
+        var idPais = select_paises.value
+
+        fetch('/dashboard/votar', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idpaisServer: idPais
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function sair() {
+        sessionStorage.clear();
+        window.location.href = "index.html";
+    }
+</script>

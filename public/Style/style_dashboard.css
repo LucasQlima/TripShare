@@ -211,162 +211,59 @@ a {
     color: aliceblue;
 }
 
-.container_conteudo .informativo {
+.container_kpis {
     display: flex;
     flex-direction: row;
     margin-top: 3vh;
-    margin-left: 3vh;
-    margin-right: 3vh;
-    justify-content: space-between;
+    padding-left: 3vh;
+    padding-right: 3vh;
+    margin-bottom: 5vh;
 }
 
-.container_conteudo .informativo .perfil {
-    all: unset;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-}
-
-.container_conteudo .informativo .perfil img {
-    width: 4vh;
-    height: fit-content;
-    margin-left: 3vh;
-}
-
-.container_conteudo .informativo .data {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: end;
-    font-weight: 300;
-}
-
-.container_conteudo .informativo .data h3 {
-    margin-right: 1vh;
-}
-
-.container_conteudo .publicacao {
+.kpi {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 4vh;
-}
-
-.container_conteudo .publicacao img {
-    width: 70vh;
-    height: fit-content;
-    border-radius: 2vh;
-}
-
-.interacoes button {
-    all: unset;
-    cursor: pointer;
-}
-
-.container_conteudo .publicacao .interacoes {
-    display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 70vh;
-    height: fit-content;
-}
-
-.container_conteudo .publicacao .interacoes h4 {
-    margin-left: 1vh;
-    font-size: 2vh;
-}
-
-.container_conteudo .publicacao h4 {
-    width: 70vh;
-    font-weight: 300;
-    font-size: 2.3vh;
-}
-
-.container_conteudo .publicacao .expandir_comentarios .button_expandir {
-    all: unset;
-    width: 70vh;
-    font-weight: 300;
-    font-size: 2vh;
-    color: rgb(118, 120, 123);
-    margin-bottom: 2vh;
-    cursor: pointer;
-}
-
-.informativo_comentarios {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 1.8vh;
-    width: 70vh;
-    font-weight: 300;
-    color: rgb(118, 120, 123);
-    margin-bottom: 2vh;
-    margin-left: 3vh;
-}
-
-.informativo_comentarios svg{
-    color: rgb(118, 120, 123);
-    width: 2vh;
-    height: fit-content;
-}
-
-.informativo_comentarios .perfil {
-    all: unset;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-    margin-bottom: 0%;
-}
-
-.informativo_comentarios .perfil img {
-    width: 3.5vh;
-    height: fit-content;
-}
-
-.informativo_comentarios .data {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-weight: 300;
-}
-
-.comentario_texto {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-  max-width: 60%;
-  color: white; /* ou a cor desejada */
-  font-size: 1rem;
-  margin: 0.5rem 0;
-}
-
-
-
-
-.input_comentario {
-    all: unset;
-    height: 7vh;
-    width: 70vh;
+    height: 14vh;
+    width: 30vh;
     background-color: rgba(7, 8, 86, 0.215);
     border: 2px solid white;
     border-radius: 5%;
     padding-left: 3vh;
+    padding-right: 3vh;
     margin-bottom: 2vh;
 }
 
-.button_comentar {
+.graficoPublicacoes {
+    padding: 3vh;
+}
+
+.container_votacao {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+}
+
+.botao_votar {
     all: unset;
     background-color: rgba(10, 10, 94, 0.27);
     color: rgb(213, 213, 255);
     border: 2px solid white;
     border-radius: 10%;
-    height: 6.9vh;
+    height: 6vh;
+    width: 10vh;
+    text-align: center;
 }
 
-.botao-curtir.curtido {
-    color: red;
+select {
+    color: aliceblue;
+    height: 6vh;
+    width: 50vh;
+    background-color: rgba(7, 8, 86, 0.215);
+    border: 2px solid white;
+    border-radius: 5%;
+    padding-left: 3vh;
+    margin-bottom: 2vh;
 }
