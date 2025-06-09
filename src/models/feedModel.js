@@ -111,10 +111,71 @@ function comentarPubli(comentario, fkPublicacao, fkUsuario) {
     return database.executar(instrucaoSql);
 }
 
+function curtirPubli(fkPublicacao, fkUsuario) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function curtirPubli():");
+
+    var instrucaoSql = `
+                INSERT INTO TBL_ATIVIDADE_PUBLI (fkUsuario, fkPublicacao) VALUES
+                    (${fkUsuario}, ${fkPublicacao});
+                `;
+
+    return database.executar(instrucaoSql);
+}
+
+function descurtirPubli(fkPublicacao, fkUsuario) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function descurtirPubli():");
+
+    var instrucaoSql = `
+                DELETE FROM TBL_ATIVIDADE_PUBLI WHERE fkPublicacao = ${fkPublicacao} AND fkUsuario = ${fkUsuario};
+                `;
+
+    return database.executar(instrucaoSql);
+}
+
+function verPublicurtida( idUsername) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function verPublicurtida():");
+
+    var instrucaoSql = `
+                SELECT 
+                    fkPublicacao as publiCurtida
+                FROM
+                	TBL_ATIVIDADE_PUBLI
+                WHERE
+                	fkUsuario = ${idUsername};
+                `;
+
+    return database.executar(instrucaoSql);
+}
+
+// function curtirComent(comentario, fkPublicacao, fkUsuario) {
+//     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function comentarPubli():");
+
+//     var instrucaoSql = `
+//                 INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+//                     ('${comentario}', ${fkPublicacao}, ${fkUsuario});
+//                 `;
+
+//     return database.executar(instrucaoSql);
+// }
+
+// function descurtirComent(comentario, fkPublicacao, fkUsuario) {
+//     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function comentarPubli():");
+
+//     var instrucaoSql = `
+//                 INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
+//                     ('${comentario}', ${fkPublicacao}, ${fkUsuario});
+//                 `;
+
+//     return database.executar(instrucaoSql);
+// }
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
     mostrarComentarios,
     denunciarPublicacao,
-    comentarPubli
+    comentarPubli,
+    curtirPubli,
+    descurtirPubli,
+    verPublicurtida,
 };

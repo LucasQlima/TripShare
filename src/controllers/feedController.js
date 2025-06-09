@@ -133,10 +133,79 @@ function comentarPubli(req, res) {
         );
 }
 
+function curtirPubli(req, res) {
+    var fkPublicacao = req.body.idpublicacaoServer;
+    var fkUsuario = req.body.idusuarioServer;
+
+    feedModel.curtirPubli(fkPublicacao, fkUsuario)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o insert de um comentario! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function descurtirPubli(req, res) {
+    var fkPublicacao = req.body.idpublicacaoServer;
+    var fkUsuario = req.body.idusuarioServer;
+
+    feedModel.descurtirPubli(fkPublicacao, fkUsuario)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o delete de uma curtida! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function verPublicurtida(req, res) {
+    var idUsername = req.body.idusuarioServer;
+
+    feedModel.verPublicurtida(idUsername)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                if (resultado.length >= 1) {
+                    const publisCurtidas = resultado.map(item => ({
+                        publiCurtida: item.publiCurtida
+                    }));
+                    res.json(publisCurtidas);
+                } else if (resultado.length == 0) {
+                    res.status(404).send("curtidas não encontradas");
+                }
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar a coleta das publis curtidas! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
     mostrarComentarios,
+    comentarPubli,
     denunciarPublicacao,
-    comentarPubli
+    curtirPubli,
+    descurtirPubli,
+    verPublicurtida,
 }

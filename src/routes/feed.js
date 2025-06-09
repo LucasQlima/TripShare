@@ -23,4 +23,16 @@ router.post("/comentarPubli", function (req, res) {
     feedController.comentarPubli(req, res);
 });
 
+router.post("/curtirPubli", function (req, res) {
+    feedController.curtirPubli(req, res);
+});
+
+router.post("/descurtirPubli", function (req, res) {
+    feedController.descurtirPubli(req, res);
+});
+
+router.post("/verPublicurtida", function (req, res) {
+    feedController.verPublicurtida(req, res);
+});
+
 module.exports = router;

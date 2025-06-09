@@ -14,7 +14,7 @@
     }
 </style>
 
-<body onload="feed()">
+<body onload="verPublicurtida(idUsername),feed()">
     <div class="container">
         <div class="container_nav_left">
             <div class="container_campos">
@@ -181,6 +181,7 @@
     var username = sessionStorage.USERNAME_USUARIO;
     var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
     var idUsername = sessionStorage.ID_USUARIO;
+    var publicacoes_curtidas = []
 
     if (imgPerfil != null) {
         div_perfil.innerHTML = `<img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="Imagem de Perfil">
@@ -188,6 +189,28 @@
     } else {
         div_perfil.innerHTML = `<img src="../img/219eaea67aafa864db091919ce3f5d82.jpg" alt="Imagem de Perfil">
         <h3>${username}</h3>`
+    }
+
+    function verPublicurtida(idUsername) {
+        fetch('/feed/verPublicurtida', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                for (var i = 0; i < resultado.length; i++) {
+                    var item = resultado[i];
+                    publicacoes_curtidas.push(item.publiCurtida);
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
     }
 
     function feed() {
@@ -204,6 +227,7 @@
                     var idPublicacao = item.idPublicacao;
 
                     if (item.imagem == null) {
+                        var fkPublicacao = item.idPublicacao;
                         div_feed.innerHTML += `
                 <div class="container_conteudo">
                     <div class="informativo">
@@ -221,15 +245,15 @@
                     <div id="div_publicacao_${item.idPublicacao}" class="publicacao">
                         <h4>${item.descricao}</h4>
                         <div class="interacoes">
-                            <button>
+                            <button id="botao_curtir_${fkPublicacao}" onclick="curtirPubli(${fkPublicacao})" class="botao-curtir">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
                                 <path
-                                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 55l7 7Z" />
                                 </svg>
                             </button>
-                            <h4>${item.curtidas}</h4>
+                            <h4 id="curtidas_${fkPublicacao}">${item.curtidas}</h4>
                             <button onclick="adicionarComentario(${item.idPublicacao})">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -249,9 +273,9 @@
                         </div>
                     </div>
                 </div>`;
-                        var fkPublicacao = item.idPublicacao;
                         comentarios(fkPublicacao);
                     } else {
+                        var fkPublicacao = item.idPublicacao;
                         div_feed.innerHTML += `
                     <div class="container_conteudo">
                         <div class="informativo">
@@ -269,15 +293,15 @@
                             <img src="${item.imagem}">
                             <h4>${item.descricao}</h4>
                             <div class="interacoes">
-                                <button>
+                                <button id="botao_curtir_${fkPublicacao}" onclick="curtirPubli(${fkPublicacao})" class="botao-curtir">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
                                     <path
-                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
                                     </svg>
                                 </button>
-                                <h4>${item.curtidas}</h4>
+                                <h4 id="curtidas_${fkPublicacao}">${item.curtidas}</h4>
                                 <button onclick="adicionarComentario(${item.idPublicacao},${item.idUsuario})">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -298,8 +322,16 @@
                         </div>
                     </div>`;
                         var fkUsuario = item.idUsuario;
-                        var fkPublicacao = item.idPublicacao;
                         comentarios(fkPublicacao);
+                        const botao = document.getElementById(`botao_curtir_${fkPublicacao}`);
+
+                        if (publicacoes_curtidas.includes(fkPublicacao)) {    
+                            botao.classList.add("curtido");
+                            botao.setAttribute("onclick", `descurtirPubli(${fkPublicacao})`);
+                        } else {
+                            botao.classList.remove("curtido");
+                            botao.setAttribute("onclick", `curtirPubli(${fkPublicacao})`);
+                        }
                     }
                 }
             })
@@ -438,6 +470,66 @@
             console.log("deu ruim")
         })
     }
+
+    function curtirPubli(fkPublicacao) {
+        fetch('/feed/curtirPubli', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idpublicacaoServer: fkPublicacao,
+                idusuarioServer: idUsername
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                const botao = document.getElementById(`botao_curtir_${fkPublicacao}`);
+                if (botao) {
+                    botao.classList.add("curtido"); // Muda a cor
+                    botao.setAttribute("onclick", `descurtirPubli(${fkPublicacao})`); // Muda o comportamento
+                }
+                const spanCurtidas = document.getElementById(`curtidas_${fkPublicacao}`);
+                if (spanCurtidas) {
+                    let numeroAtual = parseInt(spanCurtidas.innerText);
+                    spanCurtidas.innerHTML = numeroAtual + 1;
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function descurtirPubli(fkPublicacao) {
+        fetch('/feed/descurtirPubli', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idpublicacaoServer: fkPublicacao,
+                idusuarioServer: idUsername
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                const botao = document.getElementById(`botao_curtir_${fkPublicacao}`);
+                if (botao) {
+                    botao.classList.remove("curtido"); // Muda a cor
+                    botao.setAttribute("onclick", `curtirPubli(${fkPublicacao})`); // Muda o comportamento
+                }
+                const spanCurtidas = document.getElementById(`curtidas_${fkPublicacao}`);
+                if (spanCurtidas) {
+                    let numeroAtual = parseInt(spanCurtidas.innerText);
+                    spanCurtidas.innerHTML = numeroAtual - 1;
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    
 
     function sair() {
         sessionStorage.clear();

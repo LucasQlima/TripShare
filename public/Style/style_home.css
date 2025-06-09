@@ -359,3 +359,7 @@ body {
     border-radius: 10%;
     height: 6.9vh;
 }
+
+.botao-curtir.curtido {
+    color: red;
+}
