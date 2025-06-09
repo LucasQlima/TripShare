@@ -72,6 +72,7 @@ function mostrarComentarios(req, res) {
 
                 if (resultado.length >= 1) {
                     const comentariosFormatado = resultado.map(item => ({
+                        fkPublicacao: item.fkPublicacao,
                         username: item.username,
                         imgPerfil: item.imgPerfil,
                         idComentario: item.idComentario,
@@ -173,10 +174,10 @@ function descurtirPubli(req, res) {
         );
 }
 
-function verPublicurtida(req, res) {
+function verPubliCurtida(req, res) {
     var idUsername = req.body.idusuarioServer;
 
-    feedModel.verPublicurtida(idUsername)
+    feedModel.verPubliCurtida(idUsername)
         .then(
             function (resultado) {
                 console.log(`\nResultados encontrados: ${resultado.length}`);
@@ -199,6 +200,75 @@ function verPublicurtida(req, res) {
         );
 }
 
+function curtirComent(req, res) {
+    var fkPublicacao = req.body.idpublicacaoServer;
+    var fkUsuario = req.body.idusuarioServer;
+    var fkComentario = req.body.idcomentarioServer;
+
+    feedModel.curtirComent(fkComentario, fkPublicacao, fkUsuario )
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o insert de um comentario! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function descurtirComent(req, res) {
+    var fkPublicacao = req.body.idpublicacaoServer;
+    var fkUsuario = req.body.idusuarioServer;
+    var fkComentario = req.body.idcomentarioServer;
+
+    feedModel.descurtirComent(fkComentario, fkPublicacao, fkUsuario)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o delete de uma curtida! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function verComentCurtida(req, res) {
+    var idUsername = req.body.idusuarioServer;
+    var fkPublicacao = req.body.idpublicacaoServer;
+
+    feedModel.verComentCurtida(idUsername, fkPublicacao)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                if (resultado.length >= 1) {
+                    const comentariosCurtidos = resultado.map(item => ({
+                        comentarioCurtido: item.comentarioCurtido
+                    }));
+                    res.json(comentariosCurtidos);
+                } else if (resultado.length == 0) {
+                    res.status(404).send("curtidas não encontradas");
+                }
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar a coleta dos coments curtidos! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
@@ -207,5 +277,8 @@ module.exports = {
     denunciarPublicacao,
     curtirPubli,
     descurtirPubli,
-    verPublicurtida,
+    verPubliCurtida,
+    curtirComent,
+    descurtirComent,
+    verComentCurtida
 }

@@ -3,6 +3,10 @@ var router = express.Router();
 
 var feedController = require("../controllers/feedController");
 
+router.post("/verPubliCurtida", function (req, res) {
+    feedController.verPubliCurtida(req, res);
+});
+
 router.get("/recuperarFeed", function (req, res) {
     feedController.recuperarFeed(req, res);
 });
@@ -31,8 +35,17 @@ router.post("/descurtirPubli", function (req, res) {
     feedController.descurtirPubli(req, res);
 });
 
-router.post("/verPublicurtida", function (req, res) {
-    feedController.verPublicurtida(req, res);
+
+router.post("/curtirComent", function (req, res) {
+    feedController.curtirComent(req, res);
+});
+
+router.post("/descurtirComent", function (req, res) {
+    feedController.descurtirComent(req, res);
+});
+
+router.post("/verComentCurtida", function (req, res) {
+    feedController.verComentCurtida(req, res);
 });
 
 module.exports = router;

@@ -61,6 +61,7 @@ function mostrarComentarios(fkPublicacao) {
     
     var instrucaoSql = `
                 SELECT
+    c.fkPublicacao as fkPublicacao,
     u.username AS username,
     u.imgPerfil AS imgPerfil,
     c.idComentario AS idComentario,
@@ -132,7 +133,7 @@ function descurtirPubli(fkPublicacao, fkUsuario) {
     return database.executar(instrucaoSql);
 }
 
-function verPublicurtida( idUsername) {
+function verPubliCurtida( idUsername) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function verPublicurtida():");
 
     var instrucaoSql = `
@@ -147,27 +148,41 @@ function verPublicurtida( idUsername) {
     return database.executar(instrucaoSql);
 }
 
-// function curtirComent(comentario, fkPublicacao, fkUsuario) {
-//     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function comentarPubli():");
+function curtirComent(fkComentario, fkPublicacao, fkUsuario) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function curtirComent():");
 
-//     var instrucaoSql = `
-//                 INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
-//                     ('${comentario}', ${fkPublicacao}, ${fkUsuario});
-//                 `;
+    var instrucaoSql = `
+                INSERT INTO TBL_ATIVIDADE_COMENT (fkUsuario, fkPublicacao, fkComentario) VALUES
+                    (${fkUsuario}, ${fkPublicacao}, ${fkComentario});
+                `;
 
-//     return database.executar(instrucaoSql);
-// }
+    return database.executar(instrucaoSql);
+}
 
-// function descurtirComent(comentario, fkPublicacao, fkUsuario) {
-//     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function comentarPubli():");
+function descurtirComent(fkComentario, fkPublicacao, fkUsuario) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function comentarPubli():");
 
-//     var instrucaoSql = `
-//                 INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
-//                     ('${comentario}', ${fkPublicacao}, ${fkUsuario});
-//                 `;
+    var instrucaoSql = `
+                DELETE FROM TBL_ATIVIDADE_Coment WHERE fkComentario = ${fkComentario} AND fkPublicacao = ${fkPublicacao} AND fkUsuario = ${fkUsuario};
+                `;
 
-//     return database.executar(instrucaoSql);
-// }
+    return database.executar(instrucaoSql);
+}
+
+function verComentCurtida( idUsername, fkPublicacao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function verPublicurtida():");
+
+    var instrucaoSql = `
+                SELECT
+                    fkComentario as comentarioCurtido
+                FROM
+                	TBL_ATIVIDADE_COMENT
+                WHERE
+                	fkUsuario = ${idUsername} AND fkPublicacao = ${fkPublicacao};
+                `;
+
+    return database.executar(instrucaoSql);
+}
 
 module.exports = {
     recuperarFeed,
@@ -177,5 +192,8 @@ module.exports = {
     comentarPubli,
     curtirPubli,
     descurtirPubli,
-    verPublicurtida,
+    verPubliCurtida,
+    curtirComent,
+    descurtirComent,
+    verComentCurtida
 };

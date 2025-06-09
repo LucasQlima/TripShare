@@ -528,7 +528,20 @@ ORDER BY
     c.idComentario DESC;    
 -- ------------------------------------------------------------
 
+SELECT
+    fkPublicacao as publiCurtida
+FROM
+	TBL_ATIVIDADE_PUBLI
+WHERE
+	fkUsuario = 1;
+ -- ------------------------------------------------------------   
 
+SELECT
+    fkPublicacao as publiCurtida
+FROM
+	TBL_ATIVIDADE_COMENT
+WHERE
+	fkUsuario = 1;
 
 
 
@@ -543,3 +556,8 @@ WHERE TBL_PUBLICACAO.idPublicacao = 1;
 
 INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
 ('Demais! Quero visitar também.', 1, 2);
+
+
+-- DELETE
+
+DELETE FROM TBL_ATIVIDADE_PUBLI WHERE fkPublicacao = 2 AND fkUsuario = 1;

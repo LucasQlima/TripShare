@@ -14,7 +14,7 @@
     }
 </style>
 
-<body onload="verPublicurtida(idUsername),feed()">
+<body onload="feed(), verPubliCurtida(idUsername)">
     <div class="container">
         <div class="container_nav_left">
             <div class="container_campos">
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="container_column">
-            <div class="container_header">
+            <!-- <div class="container_header">
                 <div class="inputs_header">
                     <div class="search">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -101,75 +101,9 @@
                         </svg>
                     </a>
                 </div>
-            </div>
+            </div> -->
             <div id="div_feed" class="background_conteudo">
-                <div class="container_conteudo">
-                    <div class="informativo">
-                        <div class="perfil">
-                            <img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="">
-                            <h3>Luquinhas</h3>
-                            <img src="https://em-content.zobj.net/source/google/387/flag-japan_1f1ef-1f1f5.png"
-                                alt="bandeira">
-                        </div>
-                        <div class="data">
-                            <h3>data: </h3>
-                            <h4>30/01/2025 || 10:24</h4>
-                        </div>
-                    </div>
-                    <div class="publicacao">
-                        <img src="../img/people-walking-japan-street-nighttime.jpg" alt="post">
-                        <div class="interacoes">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
-                                <path
-                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-message-circle-icon lucide-message-circle">
-                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
-                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                                <path d="M12 9v4" />
-                                <path d="M12 17h.01" />
-                            </svg>
-                        </div>
-                        <h4>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis distinctio dignissimos
-                            soluta perferendis numquam. Ratione inventore minima repudiandae vero tempore fugiat, quos
-                            et ullam earum assumenda animi eaque quisquam modi.</h4>
-                        <div class="expandir_comentarios">
-                            <a>123 Comentários</a>
-                        </div>
-                        <div id="div_comentarios" class="comentarios">
-                            <div class="informativo_comentarios">
-                                <button class="perfil">
-                                    <img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="">
-                                    <h3>Luquinhas</h3>
-                                </button>
-                                <div class="data">
-                                    <h3>data: </h3>
-                                    <h3>30/01/2025 || 10:24</h3>
-                                </div>
-                            </div>
-                            <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore similique ratione,
-                                delectus consequatur iste totam quisquam, eos et excepturi id ipsum corporis! Eum,
-                                dolorum esse? Ad soluta saepe sunt libero.</h5>
-                            <div class="interacoes">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
-                                    <path
-                                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                                </svg>
-                                <h4>200</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -181,7 +115,8 @@
     var username = sessionStorage.USERNAME_USUARIO;
     var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
     var idUsername = sessionStorage.ID_USUARIO;
-    var publicacoes_curtidas = []
+    var publicacoes_curtidas = [];
+    var comentarios_curtidos = [];
 
     if (imgPerfil != null) {
         div_perfil.innerHTML = `<img src="../img/WhatsApp Image 2025-05-19 at 01.09.09.jpeg" alt="Imagem de Perfil">
@@ -191,8 +126,8 @@
         <h3>${username}</h3>`
     }
 
-    function verPublicurtida(idUsername) {
-        fetch('/feed/verPublicurtida', {
+    function verPubliCurtida(idUsername) {
+        fetch('/feed/verPubliCurtida', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -206,6 +141,29 @@
                 for (var i = 0; i < resultado.length; i++) {
                     var item = resultado[i];
                     publicacoes_curtidas.push(item.publiCurtida);
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function verComentCurtida(idUsername, fkPublicacao) {
+        fetch('/feed/verComentCurtida', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername,
+                idpublicacaoServer: fkPublicacao
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                for (var i = 0; i < resultado.length; i++) {
+                    var item = resultado[i];
+                    comentarios_curtidos.push(item.comentarioCurtido);
                 }
             })
         }).catch(() => {
@@ -323,15 +281,15 @@
                     </div>`;
                         var fkUsuario = item.idUsuario;
                         comentarios(fkPublicacao);
-                        const botao = document.getElementById(`botao_curtir_${fkPublicacao}`);
+                    }
+                    const botao = document.getElementById(`botao_curtir_${fkPublicacao}`);
 
-                        if (publicacoes_curtidas.includes(fkPublicacao)) {    
-                            botao.classList.add("curtido");
-                            botao.setAttribute("onclick", `descurtirPubli(${fkPublicacao})`);
-                        } else {
-                            botao.classList.remove("curtido");
-                            botao.setAttribute("onclick", `curtirPubli(${fkPublicacao})`);
-                        }
+                    if (publicacoes_curtidas.includes(fkPublicacao)) {    
+                        botao.classList.add("curtido");
+                        botao.setAttribute("onclick", `descurtirPubli(${fkPublicacao})`);
+                    } else {
+                        botao.classList.remove("curtido");
+                        botao.setAttribute("onclick", `curtirPubli(${fkPublicacao})`);
                     }
                 }
             })
@@ -377,13 +335,15 @@
             })
         }).then((response) => {
             response.json().then(resultado => {
+                verComentCurtida(idUsername, fkPublicacao)
                 console.log(resultado);
                 const div = document.getElementById(`div_publicacao_${fkPublicacao}`);
-                let mensagemTemp = div.innerHTML;
                 if (div) {
                     for (var i = 0; i < resultado.length; i++) {
                         var item = resultado[i];
-                        mensagemTemp += `
+                        var fkComentario = item.idComentario;
+                        let fkPublicacao = item.fkPublicacao;
+                        div.innerHTML += `
                              <div class="informativo_comentarios">
                                 <button class="perfil">
                                   <img src="${item.imgPerfil}" alt="">
@@ -396,7 +356,7 @@
                               </div>
                               <div class="comentario_texto">${item.descricao}</div>
                               <div class="interacoes">
-                                <button>
+                                <button id="botao_curtir_Coment_${fkComentario}" onclick="curtirComent(${item.fkPublicacao}, ${fkComentario})" class="botao-curtir">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="lucide lucide-heart-icon lucide-heart">
@@ -404,14 +364,22 @@
                                       d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                                   </svg>
                                 </button>
-                                <h4>${item.curtidas}</h4>
+                                <h4 id="curtidas_${fkComentario}">${item.curtidas}</h4>
                               </div>
                         `;
+                        const botao = document.getElementById(`botao_curtir_Coment_${fkComentario}`);
+                        
+                        if (comentarios_curtidos.includes(fkComentario)) {    
+                            botao.classList.add("curtido");
+                            botao.setAttribute("onclick", `descurtirComent(${fkPublicacao}, ${fkComentario})`);
+                        } else {
+                            botao.classList.remove("curtido");
+                            botao.setAttribute("onclick", `curtirComent(${fkPublicacao}, ${fkComentario})`);
+                        }
                     }
-                    div.innerHTML = mensagemTemp;
                     const botao = document.querySelector(`#expandir_comentarios_${fkPublicacao} .button_expandir`);
                     if (botao) {
-                        botao.disabled = true; // Desativa o botão
+                        botao.disabled = true;
                     }
                 }
             })
@@ -519,6 +487,66 @@
                     botao.setAttribute("onclick", `curtirPubli(${fkPublicacao})`); // Muda o comportamento
                 }
                 const spanCurtidas = document.getElementById(`curtidas_${fkPublicacao}`);
+                if (spanCurtidas) {
+                    let numeroAtual = parseInt(spanCurtidas.innerText);
+                    spanCurtidas.innerHTML = numeroAtual - 1;
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function curtirComent(fkPublicacao, fkComentario) {
+        fetch('/feed/curtirComent', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idpublicacaoServer: fkPublicacao,
+                idcomentarioServer: fkComentario,
+                idusuarioServer: idUsername
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                const botao = document.getElementById(`botao_curtir_Coment_${fkComentario}`);
+                if (botao) {
+                    botao.classList.add("curtido");
+                    botao.setAttribute("onclick", `descurtirComent(${fkPublicacao}, ${fkComentario})`);
+                }
+                const spanCurtidas = document.getElementById(`curtidas_${fkComentario}`);
+                if (spanCurtidas) {
+                    let numeroAtual = parseInt(spanCurtidas.innerText);
+                    spanCurtidas.innerHTML = numeroAtual + 1;
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function descurtirComent(fkPublicacao, fkComentario) {
+        fetch('/feed/descurtirComent', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idpublicacaoServer: fkPublicacao,
+                idcomentarioServer: fkComentario,
+                idusuarioServer: idUsername
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                const botao = document.getElementById(`botao_curtir_Coment_${fkComentario}`);
+                if (botao) {
+                    botao.classList.remove("curtido"); // Muda a cor
+                    botao.setAttribute("onclick", `curtirComent(${fkPublicacao}, ${fkComentario})`); // Muda o comportamento
+                }
+                const spanCurtidas = document.getElementById(`curtidas_${fkComentario}`);
                 if (spanCurtidas) {
                     let numeroAtual = parseInt(spanCurtidas.innerText);
                     spanCurtidas.innerHTML = numeroAtual - 1;
