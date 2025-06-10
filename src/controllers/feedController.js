@@ -269,6 +269,67 @@ function verComentCurtida(req, res) {
         );
 }
 
+function addPublicacao(req, res) {
+    var idUsername = req.body.idusuarioServer;
+    var descricao = req.body.descricaoServer;
+
+    feedModel.addPublicacao(descricao, idUsername)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar a coleta dos coments curtidos! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function addConquista(req, res) {
+    var fkPais = req.body.fkpaisServer;
+    var fkPublicacao = req.body.idpublicacaoServer;
+
+    feedModel.addConquista(fkPais, fkPublicacao)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar a coleta dos coments curtidos! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function ultimaPubli(req, res) {
+    var idUsername = req.body.idusuarioServer;
+
+    feedModel.ultimaPubli(idUsername)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                res.json({
+                        fkPublicacao: resultado[0].fkPublicacao
+                    });
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar a coleta dos coments curtidos! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
@@ -280,5 +341,8 @@ module.exports = {
     verPubliCurtida,
     curtirComent,
     descurtirComent,
-    verComentCurtida
+    verComentCurtida,
+    addPublicacao,
+    addConquista,
+    ultimaPubli
 }

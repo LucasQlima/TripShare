@@ -13,6 +13,13 @@ body {
     flex-direction: row;
 }
 
+a {
+    text-decoration: none;
+    margin-left: 1.5vh;
+    font-weight: 300;
+    color: aliceblue;
+}
+
 .container_nav_left {
     display: flex;
     flex-direction: column;
@@ -195,6 +202,8 @@ body {
 .container_conteudo {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin-top: 9vh;
     margin-bottom: 2vh;
     width: 100vh;
@@ -204,3 +213,42 @@ body {
     color: aliceblue;
 }
 
+.input_descricao {
+    all: unset;
+    height: 7vh;
+    width: 70vh;
+    background-color: rgba(7, 8, 86, 0.215);
+    border: 2px solid white;
+    border-radius: 5%;
+    padding-left: 3vh;
+    margin-bottom: 2vh;
+    margin-top: 4vh;
+}
+
+.container_enviar {
+    display: flex;
+    flex-direction: row;
+}
+
+.botao_publicar {
+    all: unset;
+    background-color: rgba(10, 10, 94, 0.27);
+    color: rgb(213, 213, 255);
+    border: 2px solid white;
+    border-radius: 10%;
+    height: 6vh;
+    width: 10vh;
+    text-align: center;
+    margin-left: 1vh;
+}
+
+select {
+    color: aliceblue;
+    height: 6vh;
+    width: 50vh;
+    background-color: rgba(7, 8, 86, 0.215);
+    border: 2px solid white;
+    border-radius: 5%;
+    padding-left: 3vh;
+    margin-bottom: 2vh;
+}

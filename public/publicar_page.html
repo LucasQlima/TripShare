@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripShare || Home Page</title>
-    <link rel="stylesheet" href="\Style\style_home.css">
+    <title>TripShare || Publicar Page</title>
+    <link rel="stylesheet" href="\Style\style_publicar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
 </head>
 <style>
@@ -14,7 +14,7 @@
     }
 </style>
 
-<body>
+<body onload="listarPaises()", ult>
     <div class="container">
         <div class="container_nav_left">
             <div class="container_campos">
@@ -73,25 +73,12 @@
         </div>
         <div class="container_column">
             
-            <div id="div_feed" class="container_conteudo"> 
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-                <h2>AAAAAAAAA</h2>
-
+            <div id="div_publciar" class="container_conteudo"> 
+                <input type="text" placeholder="Adicione uma descriçâo" class="input_descricao" id="input_descricao">
+                <div class="container_enviar">
+                    <select id="select_paises" calss="select_text"></select>
+                    <button class="botao_publicar" onclick="addPublicacao()">Publicar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -103,6 +90,91 @@
     var username = sessionStorage.USERNAME_USUARIO;
     var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
     var idUsername = sessionStorage.ID_USUARIO;
+    var ultimaPublicacao = 0;
+
+    function listarPaises() {
+        fetch('/usuarios/buscarPaises', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                for (var i = 0; i < resultado.length; i++) {
+                    var item = resultado[i];
+
+                    select_paises.innerHTML += `<option value="${item.identificador}"><img src="${item.bandeira}">${item.pais}</option>`
+                }
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function addPublicacao() {
+        var descricao = input_descricao.value;
+        
+        fetch('/feed/addPublicacao', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername,
+                descricaoServer: descricao
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                ultimaPubli()
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function ultimaPubli() {
+        fetch('/feed/ultimaPubli', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername,
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+                ultimaPublicacao = resultado.fkPublicacao;
+                addConquista(ultimaPublicacao)
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function addConquista(ultimaPublicacao) {
+        var fkPublicacao = ultimaPublicacao;
+        var idPais = select_paises.value;
+        
+        fetch('/feed/addConquista', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fkpaisServer: idPais,
+                idpublicacaoServer: fkPublicacao
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado);
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
 
     function sair() {
         sessionStorage.clear();

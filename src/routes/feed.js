@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 var feedController = require("../controllers/feedController");
 
@@ -46,6 +48,18 @@ router.post("/descurtirComent", function (req, res) {
 
 router.post("/verComentCurtida", function (req, res) {
     feedController.verComentCurtida(req, res);
+});
+
+router.post("/addPublicacao", function (req, res) {
+    feedController.addPublicacao(req, res);
+});
+
+router.post("/addConquista", function (req, res) {
+    feedController.addConquista(req, res);
+});
+
+router.post("/ultimaPubli", function (req, res) {
+    feedController.ultimaPubli(req, res);
 });
 
 module.exports = router;

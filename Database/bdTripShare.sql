@@ -399,9 +399,9 @@ INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
 INSERT INTO TBL_CONQUISTA (fkPublicacao, fkPais) VALUES
 (1, 8),    -- Brasil
 (2, 20),   -- Áustria
-(3, 57),   -- Alemanha
-(4, 144),  -- Portugal
-(5, 107);  -- EUA
+(3, 62),   -- Alemanha
+(4, 82),  -- Portugal
+(5, 103);  -- EUA
 
 -- ATV_Publi
 
@@ -442,7 +442,7 @@ INSERT INTO TBL_ATIVIDADE_COMENT (fkUsuario, fkPublicacao, fkComentario) VALUES
 
 
 -- SELECT --
-SELECT * FROM TBL_PAIS;    
+SELECT * FROM TBL_PAIS ORDER BY nome;    
 SELECT * FROM TBL_USUARIO;
 SELECT * FROM TBL_PUBLICACAO;
 SELECT * FROM TBL_COMENTARIO;
@@ -586,6 +586,14 @@ FROM
 ORDER BY 
 	votos DESC
 LIMIT 5;
+-- ------------------------------------------------------------   
+
+SELECT idPublicacao
+FROM TBL_PUBLICACAO
+WHERE fkUsuario = 1
+ORDER BY idPublicacao DESC
+LIMIT 1;
+
 
 
 -- UPDATES

@@ -255,6 +255,7 @@ a {
     height: 6vh;
     width: 10vh;
     text-align: center;
+    margin-left: 1vh;
 }
 
 select {

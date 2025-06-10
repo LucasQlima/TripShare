@@ -184,6 +184,42 @@ function verComentCurtida( idUsername, fkPublicacao) {
     return database.executar(instrucaoSql);
 }
 
+function addPublicacao(descricao, idUsername) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function addPublicacao():");
+
+    var instrucaoSql = `
+                INSERT INTO TBL_PUBLICACAO (descricao, dtPubli, denuncias, fkUsuario) VALUES
+                    ('${descricao}', NOW(), 0, ${idUsername});
+                `;
+
+    return database.executar(instrucaoSql);
+}
+
+function addConquista(fkPais, fkPublicacao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function addPublicacao():");
+
+    var instrucaoSql = `
+                INSERT INTO TBL_CONQUISTA (fkPais, fkPublicacao) VALUES
+                    ('${fkPais}', ${fkPublicacao});
+                `;
+
+    return database.executar(instrucaoSql);
+}
+
+function ultimaPubli(idUsername) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function addPublicacao():");
+
+    var instrucaoSql = `
+                SELECT idPublicacao as fkPublicacao
+                FROM TBL_PUBLICACAO
+                WHERE fkUsuario = ${idUsername}
+                ORDER BY idPublicacao DESC
+                LIMIT 1;
+                `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     recuperarFeed,
     contarComentarios,
@@ -195,5 +231,8 @@ module.exports = {
     verPubliCurtida,
     curtirComent,
     descurtirComent,
-    verComentCurtida
+    verComentCurtida,
+    addPublicacao,
+    addConquista,
+    ultimaPubli
 };
