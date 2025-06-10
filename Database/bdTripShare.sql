@@ -372,7 +372,7 @@ INSERT INTO TBL_IMAGEM (imagem, fkPublicacao) VALUES
 -- Comentários para publicação 1 (Brasil)
 INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES
 ('Demais! Quero visitar também.', 1, 2),
-('Já fui, é lindo demais!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', 1, 4);
+('Já fui, é lindo demais!!!', 1, 4);
 
 -- Comentários para publicação 2 (Áustria)
 INSERT INTO TBL_COMENTARIO (descricao, fkPublicacao, fkUsuario) VALUES

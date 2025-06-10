@@ -79,34 +79,84 @@ function cadastrar(req, res) {
 }
 
 function buscarPaises(req, res) {
-     usuarioModel.buscarPaises()
-            .then(
-                function (resultado) {
-                    console.log(`\nResultados encontrados: ${resultado.length}`);
-                    console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
-    
-                    if (resultado.length >= 1) {
-                        const listaPaises = resultado.map(item => ({
-                            identificador: item.identificador,
-                            pais: item.pais,
-                            bandeira: item.bandeira
-                        }));
-                        res.json(listaPaises);
-                    } else if (resultado.length == 0) {
-                        res.status(403).send("Pais não encontrado");
-                    }
+    usuarioModel.buscarPaises()
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+
+                if (resultado.length >= 1) {
+                    const listaPaises = resultado.map(item => ({
+                        identificador: item.identificador,
+                        pais: item.pais,
+                        bandeira: item.bandeira
+                    }));
+                    res.json(listaPaises);
+                } else if (resultado.length == 0) {
+                    res.status(403).send("Pais não encontrado");
                 }
-            ).catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log("\nHouve um erro ao realizar a captura do feed! Erro: ", erro);
-                    res.status(500).json(erro.sqlMessage);
-                }
-            );
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar a captura do feed! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarPaisDoUsuario(req, res) {
+    var idUsername = req.body.idusuarioServer;
+
+    usuarioModel.buscarPaisDoUsuario(idUsername)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                console.log(resultado);
+                res.json({
+                    fkPais: resultado[0].fkPais,
+                    nomePais: resultado[0].nomePais,
+                    bandeira: resultado[0].bandeira,
+                });
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o login! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarPaisesPublicados(req, res) {
+    var idUsername = req.body.idusuarioServer;
+
+    usuarioModel.buscarPaisesPublicados(idUsername)
+        .then(
+            function (resultado) {
+                console.log(`\nResultados encontrados: ${resultado.length}`);
+                console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
+                console.log(resultado);
+                const conquistas = resultado.map(item => ({
+                        pais: item.pais,
+                        bandeira: item.bandeira,
+                    }));
+                    res.json(conquistas);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o login! Erro: ", erro);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
 }
 
 module.exports = {
     autenticar,
     cadastrar,
-    buscarPaises
+    buscarPaises,
+    buscarPaisDoUsuario,
+    buscarPaisesPublicados
 }

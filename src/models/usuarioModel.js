@@ -32,8 +32,48 @@ function buscarPaises() {
     return database.executar(instrucaoSql);
 }
 
+function buscarPaisDoUsuario(idUsername) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():");
+    
+    const instrucao = `
+        SELECT 
+            u.fkPais as fkPais,
+            p.nome AS nomePais,
+            p.bandeira as bandeira
+        FROM 
+            TBL_USUARIO u
+        JOIN 
+            TBL_PAIS p ON u.fkPais = p.idPais
+        WHERE 
+            u.idUsuario = ${idUsername};
+    `;
+    return database.executar(instrucao);
+}
+
+function buscarPaisesPublicados(idUsername) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():");
+
+    const instrucao = `
+        SELECT DISTINCT 
+            p.nome as pais, 
+            p.bandeira as bandeira
+        FROM 
+            TBL_CONQUISTA c
+        JOIN 
+            TBL_PUBLICACAO pub ON c.fkPublicacao = pub.idPublicacao
+        JOIN 
+            TBL_PAIS p ON c.fkPais = p.idPais
+        WHERE 
+            pub.fkUsuario = ${idUsername};
+    `;
+    
+    return database.executar(instrucao);
+}
+
 module.exports = {
     autenticar,
     cadastrar,
-    buscarPaises
+    buscarPaises,
+    buscarPaisDoUsuario,
+    buscarPaisesPublicados,
 };

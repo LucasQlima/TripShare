@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripShare || Publicar Page</title>
+    <link rel="stylesheet" href="\Style\style_perfil.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+</head>
+<style>
+    .logo h3 {
+        font-family: "Sofia", sans-serif;
+    }
+</style>
+
+<body onload="buscarPaisDoUsuario(), buscarPaisesPublicados()">
+    <div class="container">
+        <div class="container_nav_left">
+            <div class="container_campos">
+                <a href="home_page.html" class="logo">
+                    <h3>TripShare</h3>
+                    <img src="../img/logo.png" alt="Logo">
+                </a>
+                <div class="campo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-circle-user-icon lucide-circle-user">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="10" r="3" />
+                        <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+                    </svg>
+                    <a href="perfil_page.html">Perfil</a>
+                </div>
+                <div class="campo">
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-plus-icon lucide-plus">
+                            <path d="M5 12h14" />
+                            <path d="M12 5v14" />
+                        </svg>
+                        <a href="publicar_page.html">Publicar</a>
+                    </button>
+                </div>
+                <div class="campo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-chart-column-icon lucide-chart-column">
+                        <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+                        <path d="M18 17V9" />
+                        <path d="M13 17V5" />
+                        <path d="M8 17v-3" />
+                    </svg>
+                    <a href="dashboard_page.html">Dashboard</a>
+                </div>
+            </div>
+            <div class="container_perfil">
+                <div class="perfil" id="div_perfil"></div>
+                <div class="campo_sair">
+                    <button onclick="sair()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-log-out-icon lucide-log-out">
+                            <path d="m16 17 5-5-5-5" />
+                            <path d="M21 12H9" />
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        </svg>
+                        <h3>SAIR</h3>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container_column">
+            <div id="div_feed" class="container_conteudo">
+                <div id="div_usuario" class="container_usuario"></div>
+                <h2>País de origem:</h2>
+                <div id="div_origem" class="container_origem"></div>
+                <h2>Países visitados</h2>
+                <div id="div_visitados" class="container_visitados"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    var username = sessionStorage.USERNAME_USUARIO;
+    var imgPerfil = sessionStorage.IMGPERFIL_USUARIO;
+    var idUsername = sessionStorage.ID_USUARIO;
+    var ultimaPublicacao = 0;
+
+    div_usuario.innerHTML = `<img src="${imgPerfil}" alt="">
+                            <h3>${username}</h3>`
+
+    function buscarPaisDoUsuario() {
+        fetch('/usuarios/buscarPaisDoUsuario', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername,
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                div_origem.innerHTML = `
+                            <img src="${resultado.bandeira}" alt="">
+                            <h3>${resultado.nomePais}</h3>
+                            `
+            })
+        }).catch(() => {
+            console.log("deu ruim")
+        })
+    }
+
+    function buscarPaisesPublicados() {
+        fetch('/usuarios/buscarPaisesPublicados', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idusuarioServer: idUsername,
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                for (var i = 0; i < resultado.length; i++) {
+                    var item = resultado[i];
+
+                    div_visitados.innerHTML += `
+                    <div class="pais">
+                        <img src="${item.bandeira}" alt="">
+                        <h3>${item.pais}</h3>
+                    </div>
+                `;
+                }
+            });
+        }).catch(() => {
+            console.log("deu ruim");
+        });
+    }
+
+    function sair() {
+        sessionStorage.clear();
+        window.location.href = "index.html";
+    }
+</script>

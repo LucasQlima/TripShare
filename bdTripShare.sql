@@ -587,6 +587,18 @@ ORDER BY
 	votos DESC
 LIMIT 5;
 
+SELECT 
+	p.nome as pais, 
+	p.bandeira as bandeira
+        FROM 
+            TBL_CONQUISTA c
+        JOIN 
+            TBL_PUBLICACAO pub ON c.fkPublicacao = pub.idPublicacao
+        JOIN 
+            TBL_PAIS p ON c.fkPais = p.idPais
+        WHERE 
+            pub.fkUsuario = 6;
+
 
 -- UPDATES
 
